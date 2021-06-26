@@ -1,0 +1,13 @@
+.dashboard-container {
+  width: 1200px;
+  height: 90vh;
+  background: #f5f6fb;
+  border-radius: 12px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
+
+  .main-container {
+    width: 80%;
+  }
+}
