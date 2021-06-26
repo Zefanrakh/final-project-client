@@ -1,0 +1,108 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(black, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  .add-presence-container {
+    background: rgb(255, 255, 255);
+    width: 370px;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+
+    .icon-close {
+      font-size: 20px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      color: #f15c60;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 500;
+      color: #f15c60;
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+
+      label {
+        font-size: 16px;
+        color: #464242;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      input,
+      textarea {
+        height: 36px;
+        font-size: 16px;
+        border-radius: 16px;
+        border: 1px solid grey;
+        padding: 0 16px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+        outline: none;
+        color: grey;
+      }
+      textarea {
+        height: 100px;
+        padding-top: 8px;
+      }
+
+      .image-container {
+        display: flex;
+      }
+
+      .button-upload {
+        height: 50px;
+        width: 50px;
+        border-radius: 16px;
+        font-size: 28px;
+        font-weight: 500;
+        color: grey;
+        outline: none;
+        background: none;
+        margin: 0;
+
+        .icon {
+          font-size: 20px !important;
+        }
+      }
+
+      .image-profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        margin-right: 8px;
+      }
+
+      .icon-redo {
+        font-size: 16px;
+      }
+
+      button {
+        height: 36px;
+        font-size: 16px;
+        color: white;
+        border-radius: 16px;
+        margin-top: 18px;
+        cursor: pointer;
+        background: #f15c60;
+        margin-top: 36px;
+      }
+    }
+  }
+}

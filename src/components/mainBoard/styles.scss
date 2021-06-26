@@ -1,0 +1,32 @@
+.main-board {
+  padding: 40px;
+  height: 70vh;
+  overflow: scroll;
+
+  .react-loading-skeleton {
+    height: 50px;
+    // box-shadow: 6px 2px 1px hsla(0, 0%, 47.8%, 0.212);
+  }
+  .header__main-board {
+    display: flex;
+    width: 100%;
+    background: white;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    color: #757474;
+    margin-bottom: 16px;
+    font-weight: 600;
+    box-shadow: 6px 10px 12px hsla(0, 0%, 47.8%, 0.212);
+    .text-header {
+      flex: 2;
+    }
+
+    .id-text {
+      flex: 1;
+    }
+  }
+}
