@@ -1,10 +1,11 @@
 import "./styles.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
+import { useHistory } from "react-router";
 
 const listHeader = [
   "Id",
@@ -38,11 +39,17 @@ const dummyData = [
 ];
 
 const Appointment = () => {
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
 
+  useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+  }, []);
   return (
     <div className="appointment-container">
       <SideMenu />

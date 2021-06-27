@@ -1,7 +1,9 @@
 import { combineReducers } from "redux";
+import dummyReducer from "./dummyReducer";
 
-import fetchDummyReducer from "./fetchDummyReducer";
+import userReducer from "./userReducer";
 
 export default combineReducers({
-  fetchDummyReducer,
+  userReducer,
+  dummyReducer,
 });

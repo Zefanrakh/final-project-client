@@ -4,7 +4,7 @@ const initialState = {
   dummy: [],
 };
 
-const fetchDummyReducer = (state = initialState, action) => {
+const dummyReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_DUMMY:
       return { ...state, dummy: action.payload.dummy };
@@ -13,4 +13,4 @@ const fetchDummyReducer = (state = initialState, action) => {
   }
 };
 
-export default fetchDummyReducer;
+export default dummyReducer;

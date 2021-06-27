@@ -4,7 +4,8 @@ import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import AddPresenceForm from "../../components/addPresenceForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
@@ -19,10 +20,16 @@ const dummyData = [
 ];
 
 const PresenceList = () => {
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
+  useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+  }, []);
   return (
     <div className="presenceList-container">
       <SideMenu />
