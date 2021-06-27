@@ -6,7 +6,7 @@ export const config = {
     {
       urls: "turn:numb.viagenie.ca",
       credential: "muazkh",
-      username: "asurisrat@gmail.com",
+      username: "webrtc@live.com",
     },
   ],
 };
