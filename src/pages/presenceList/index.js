@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
-const dummyData = [
+const data = [
   {
     id: "1",
     dropperName: "Jao",
@@ -30,13 +30,13 @@ const PresenceList = () => {
         {openPopUp && (
           <AddPresenceForm
             openPopUpHandler={openPopUpHandler}
-            dummyData={dummyData}
+            data={data}
           />
         )}
         <Header />
         <MainBoard
           listHeader={listHeader}
-          dummyData={dummyData}
+          data={data}
           isPresenceListPage
         />
         <FloatingButton onClick={openPopUpHandler}>

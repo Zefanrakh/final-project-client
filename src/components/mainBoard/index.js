@@ -9,10 +9,11 @@ import React, { useEffect, useState } from "react";
 const MainBoard = ({
   isAppointment,
   listHeader,
-  dummyData,
+  data,
   isMemberPage,
   isPresenceListPage,
 }) => {
+  console.log(data, 'di mainboard ===>');
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -39,13 +40,13 @@ const MainBoard = ({
       )}
 
       {!isLoading &&
-        dummyData.map((user) => {
+        data.map((user, idx) => {
           return isMemberPage ? (
-            <CardMember user={user} />
+            <CardMember key={idx} user={user} />
           ) : isPresenceListPage ? (
-            <CardPresenceList user={user} />
+            <CardPresenceList key={idx} user={user} />
           ) : (
-            <CardAppointment user={user} isAppointment={isAppointment} />
+            <CardAppointment key={idx} user={user} isAppointment={isAppointment} />
           );
         })}
     </div>

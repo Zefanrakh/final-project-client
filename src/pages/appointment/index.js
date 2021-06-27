@@ -1,10 +1,12 @@
 import "./styles.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAppointment } from "../../store/action"
 
 const listHeader = [
   "Id",
@@ -39,10 +41,20 @@ const dummyData = [
 
 const Appointment = () => {
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
 
+  const dispatch = useDispatch()
+  const data = useSelector(state => state.fetchAppointmentReducer.appointments)
+  useEffect(() => {
+    setIsloading(true)
+    dispatch(fetchAppointment())
+    setIsloading(false)
+  },[])
+
+  if(isloading){ return <p>Loading..</p> }
   return (
     <div className="appointment-container">
       <SideMenu />
@@ -57,10 +69,10 @@ const Appointment = () => {
         <MainBoard
           isAppointment={true}
           listHeader={listHeader}
-          dummyData={dummyData}
+          data={data}
         />
         <FloatingButton onClick={openPopUpHandler}>
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </FloatingButton>
       </div>
     </div>

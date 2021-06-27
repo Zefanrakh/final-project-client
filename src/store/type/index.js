@@ -1,1 +1,2 @@
 export const FETCH_DUMMY = "FETCH_DUMMY";
+export const FETCH_APPOINTMENT = "FETCH_APPOINTMENT";
