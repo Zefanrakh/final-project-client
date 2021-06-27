@@ -7,22 +7,24 @@ import { useState } from "react";
 import AddMemberForm from "../../components/addMemberForm";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
-const dummyData = [
-  {
-    id: "1",
-    name: "kevin",
-    address: "bogor",
-    email: "kevin@gmail.com",
-    phone: "081121313131",
-  },
-  {
-    id: "2",
-    name: "Joni",
-    address: "alor",
-    email: "joni@gmail.com",
-    phone: "424244242",
-  },
-];
+// const dummyData = [
+//   {
+//     id: "1",
+//     name: "kevin",
+//     address: "bogor", 
+//     email: "kevin@gmail.com",
+//     phone: "081121313131",
+//   },
+//   {
+//     id: "2",
+//     name: "Joni",
+//     address: "alor",
+//     email: "joni@gmail.com",
+//     phone: "424244242",
+//   },
+// ];
+
+
 const Customer = () => {
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
@@ -36,7 +38,7 @@ const Customer = () => {
         <Header />
         <MainBoard
           listHeader={listHeader}
-          dummyData={dummyData}
+          // dummyData={dummyData}
           isMemberPage={true}
         />
         <FloatingButton onClick={openPopUpHandler}>

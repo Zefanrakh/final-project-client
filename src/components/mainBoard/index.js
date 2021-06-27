@@ -2,24 +2,43 @@ import "./styles.scss";
 import CardAppointment from "../cardAppointment";
 import CardMember from "../cardMember";
 import CardPresenceList from "../cardPresenceList";
-
+import {fetchCustomerAction} from '../../store/action';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector} from 'react-redux'
 
 const MainBoard = ({
   isAppointment,
   listHeader,
-  dummyData,
   isMemberPage,
   isPresenceListPage,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch()
+  const customers = useSelector(state=>state.customerReducer.fetchCustomer.customers)
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
   }, []);
+
+  useEffect(()=>{
+    dispatch(fetchCustomerAction())
+  },[]);
+
+  // useEffect(()=>{
+  //   fetch(`https://localhost:3000/customers`)
+  //        .then(response => response.json())
+  //        .then(data => console.log(data.results))
+  //        .catch(err => {
+  //            console.log(err)
+  //        })
+  // })
+
   return (
+    <>
+    {/* <h1>{JSON.stringify(customers[0].name)} asldksadfsda</h1> */}
     <div className="main-board">
       <div className="header__main-board">
         {listHeader.map((text) => {
@@ -39,16 +58,17 @@ const MainBoard = ({
       )}
 
       {!isLoading &&
-        dummyData.map((user) => {
+        customers.map((customer) => {
           return isMemberPage ? (
-            <CardMember user={user} />
+            <CardMember customer={customer} />
           ) : isPresenceListPage ? (
-            <CardPresenceList user={user} />
+            <CardPresenceList customer={customer} />
           ) : (
-            <CardAppointment user={user} isAppointment={isAppointment} />
+            <CardAppointment customer={customer} isAppointment={isAppointment} />
           );
         })}
     </div>
+    </>
   );
 };
 

@@ -1,1 +1,3 @@
 export const FETCH_DUMMY = "FETCH_DUMMY";
+export const FETCH_CUSTOMER = "FETCH_CUSTOMER";
+export const ADD_CUSTOMER = "ADD_CUSTOMER";
