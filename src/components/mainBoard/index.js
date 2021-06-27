@@ -13,7 +13,6 @@ const MainBoard = ({
   isMemberPage,
   isPresenceListPage,
 }) => {
-  console.log(data, 'di mainboard ===>');
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {

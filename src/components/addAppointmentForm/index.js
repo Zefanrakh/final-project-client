@@ -1,8 +1,8 @@
 import "./styles.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
-import { addAppointment } from "../../store/action/"
-import { useDispatch } from "react-redux"
+import { addAppointment, fetchCustomer } from "../../store/action/"
+import { useDispatch, useSelector } from "react-redux"
 
 const dummyDataMember = [
   {
@@ -28,6 +28,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     return date;
   }
   const dispatch = useDispatch()
+  const data = useSelector(state => state.fetchCustomerReducer.customers)
   let now = new Date()
   let nowStr = now.addDays(2).toISOString().substring(0, 10)
   const role = localStorage.getItem("role");
@@ -44,10 +45,16 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const [packageCategory, setPackageCategory] = useState("daily");
   const [completedCategory, setCompletedCategory] = useState(false);
 
+  useEffect(() => {
+    dispatch(fetchCustomer())
+  },[])
+  if(!data){
+    return <p>Loading..</p>
+  }
   const onChangeHandler = (e) => {
     setCustomerChoosed({});
     setInputCustomerValue(e.target.value);
-    const customers = dummyDataMember.filter((customer) => {
+    const customers = data.filter((customer) => {
       console.log(customer);
       return e.target.value && customer.name.toLowerCase().includes(e.target.value.toLowerCase());
     });
