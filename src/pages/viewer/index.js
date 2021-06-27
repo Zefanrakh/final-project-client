@@ -6,7 +6,7 @@ const Viewer = () => {
   const socketRef = useRef();
 
   useEffect(async () => {
-    socketRef.current = await io.connect("http://localhost:4000");
+    socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
     const video = document.querySelector("video");
     let peerConnection = {};
 

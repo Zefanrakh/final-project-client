@@ -5,7 +5,7 @@ const Broadcaster = () => {
   const socketRef = useRef();
   const peerConnections = {};
   useEffect(async () => {
-    socketRef.current = await io.connect("http://localhost:4000");
+    socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
 
     socketRef.current.on("answer", (id, description) => {
       peerConnections[id].setRemoteDescription(description);
