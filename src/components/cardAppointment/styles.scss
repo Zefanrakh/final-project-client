@@ -13,6 +13,19 @@
   box-shadow: 6px 5px 4px hsla(0, 0%, 47.8%, 0.212);
   text-overflow: ellipsis;
 
+  .qr-code {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .see-more {
     text-decoration: underline;
     color: #f15c60 !important;

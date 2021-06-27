@@ -1,15 +1,17 @@
 import io from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
-import { config } from "../../config";
+import { config, baseUrl } from "../../config";
 import { useHistory } from "react-router-dom";
+
 import "./styles.scss";
 const Monitoring = () => {
   const socketRef = useRef();
   const peerConnections = {};
   const [openVideo, setOpenVideo] = useState(false);
   const history = useHistory();
+
   useEffect(async () => {
-    socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
+    socketRef.current = await io.connect(baseUrl);
 
     socketRef.current.on("answer", (id, description) => {
       peerConnections[id].setRemoteDescription(description);
@@ -113,7 +115,7 @@ const Monitoring = () => {
 
   return (
     <div className="monitoring-container">
-      <section class="select">
+      <section className="select">
         <label for="videoSource">Video source: </label>
         <select id="videoSource"></select>
       </section>

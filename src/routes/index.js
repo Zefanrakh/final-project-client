@@ -8,6 +8,7 @@ import History from "../pages/history";
 import PresenceList from "../pages/presenceList";
 import Monitoring from "../pages/monitoring";
 import Viewer from "../pages/viewer";
+
 const routes = [
   {
     component: () => <Dashboard />,
@@ -15,7 +16,7 @@ const routes = [
   },
   {
     component: () => <Viewer />,
-    path: "/viewer",
+    path: "/viewer/trgz",
   },
   {
     component: () => <Monitoring />,

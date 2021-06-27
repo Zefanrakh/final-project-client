@@ -10,3 +10,5 @@ export const config = {
     },
   ],
 };
+
+export const baseUrl = "https://coba-cctv.herokuapp.com/";

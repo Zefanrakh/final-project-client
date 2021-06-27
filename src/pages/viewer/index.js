@@ -1,15 +1,32 @@
-import { config } from "../../config";
-import { useEffect, useRef, useState } from "react";
+import { config, baseUrl } from "../../config";
+import { useEffect, useRef } from "react";
 import io from "socket.io-client";
-import { useHistory } from "react-router-dom";
-
+import { useHistory, useLocation } from "react-router-dom";
+import queryString from "query-string";
+import jwt from "jsonwebtoken";
 import "./styles.scss";
+
 const Viewer = () => {
   const socketRef = useRef();
   const history = useHistory();
+  const { search } = useLocation();
+
+  useEffect(() => {
+    const parsed = queryString.parse(search);
+    const decodeQuery = jwt.verify(parsed.query, "privateKey");
+    const today = new Date().getTime();
+    const from = new Date(decodeQuery.startDate).getTime();
+    const to = new Date(decodeQuery.endDate).getTime();
+    const withinRange = today >= from && today <= to;
+
+    if (!withinRange) {
+      history.push("/appointment?message=not-avalaible");
+    }
+  }, []);
 
   useEffect(async () => {
-    socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
+    socketRef.current = await io.connect(baseUrl);
+
     const video = document.querySelector("video");
     let peerConnection = {};
 

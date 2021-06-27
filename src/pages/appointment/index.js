@@ -1,10 +1,13 @@
 import "./styles.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
+import Payment from "../../components/payment";
 
 const listHeader = [
   "Id",
@@ -21,28 +24,42 @@ const dummyData = [
     id: "1",
     childName: "barack",
     childAge: 9,
-    startDate: "29 / 2 / 2021",
-    endDate: "31 / 2 / 2021",
+    startDate: "29/2/2021",
+    endDate: "31/2/2021",
     notes: "notes panjang banget sampe gabisa diliat",
     status: "belum bayar",
+    type: "infant",
   },
   {
     id: "2",
     childName: "kevin",
     childAge: 10,
-    startDate: "29 / 2 / 2021",
-    endDate: "31 / 2 / 2021",
+    startDate: "29/2/2021",
+    endDate: "31/2/2021",
     notes: "notes panjang banget sampe gabisa diliat",
     status: "sudah bayar",
+    type: "infant",
   },
 ];
 
 const Appointment = () => {
+  const { search } = useLocation();
+  const [isPayment, setIsPayment] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
 
+  useEffect(() => {
+    if (search) {
+      const parsed = queryString.parse(search);
+      if (parsed.payment) {
+        setIsPayment(true);
+      }
+    } else {
+      setIsPayment(false);
+    }
+  }, [search]);
   return (
     <div className="appointment-container">
       <SideMenu />
@@ -54,14 +71,20 @@ const Appointment = () => {
           />
         )}
         <Header />
-        <MainBoard
-          isAppointment={true}
-          listHeader={listHeader}
-          dummyData={dummyData}
-        />
-        <FloatingButton onClick={openPopUpHandler}>
-          <i class="fas fa-plus"></i>
-        </FloatingButton>
+        {isPayment ? (
+          <Payment query={queryString.parse(search)} />
+        ) : (
+          <>
+            <MainBoard
+              isAppointment={true}
+              listHeader={listHeader}
+              dummyData={dummyData}
+            />
+            <FloatingButton onClick={openPopUpHandler}>
+              <i class="fas fa-plus"></i>
+            </FloatingButton>
+          </>
+        )}
       </div>
     </div>
   );
