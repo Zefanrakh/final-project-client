@@ -22,9 +22,12 @@ const MainBoard = ({
   return (
     <div className="main-board">
       <div className="header__main-board">
-        {listHeader.map((text) => {
+        {listHeader.map((text, idx) => {
           return (
-            <div className={`${text === "Id" && "id-text"} text-header `}>
+            <div
+              key={idx}
+              className={`${text === "Id" && "id-text"} text-header `}
+            >
               {text}
             </div>
           );
@@ -39,13 +42,17 @@ const MainBoard = ({
       )}
 
       {!isLoading &&
-        dummyData.map((user) => {
+        dummyData.map((user, idx) => {
           return isMemberPage ? (
-            <CardMember user={user} />
+            <CardMember key={idx} user={user} />
           ) : isPresenceListPage ? (
-            <CardPresenceList user={user} />
+            <CardPresenceList key={idx} user={user} />
           ) : (
-            <CardAppointment user={user} isAppointment={isAppointment} />
+            <CardAppointment
+              key={idx}
+              user={user}
+              isAppointment={isAppointment}
+            />
           );
         })}
     </div>
