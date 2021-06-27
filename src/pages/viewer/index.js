@@ -6,12 +6,7 @@ import { useHistory } from "react-router-dom";
 import "./styles.scss";
 const Viewer = () => {
   const socketRef = useRef();
-  const [openVideo, setOpenVideo] = useState(false);
   const history = useHistory();
-
-  const openVideoHandler = () => {
-    setOpenVideo(!openVideo);
-  };
 
   useEffect(async () => {
     socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
@@ -60,24 +55,8 @@ const Viewer = () => {
   return (
     <div className="viewer-container">
       <div className="video-container">
-        <video
-          playsInline
-          autoPlay
-          muted
-          className={`video-monitoring ${openVideo && "open-video"}`}
-        ></video>
-        <div
-          className={`button-container__monitoring ${
-            !openVideo && "button-container__monitoring-static"
-          }`}
-        >
-          <div className="hide-button">
-            {openVideo ? (
-              <i class="fas fa-minus" onClick={openVideoHandler}></i>
-            ) : (
-              <i class="fas fa-video" onClick={openVideoHandler}></i>
-            )}
-          </div>
+        <video playsInline autoPlay muted></video>
+        <div className="button-container__monitoring">
           <div className="close-button">
             <i
               class="fas fa-times"
