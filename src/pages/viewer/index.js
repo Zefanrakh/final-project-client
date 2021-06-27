@@ -1,9 +1,17 @@
 import { config } from "../../config";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import { useHistory } from "react-router-dom";
 
+import "./styles.scss";
 const Viewer = () => {
   const socketRef = useRef();
+  const [openVideo, setOpenVideo] = useState(false);
+  const history = useHistory();
+
+  const openVideoHandler = () => {
+    setOpenVideo(!openVideo);
+  };
 
   useEffect(async () => {
     socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
@@ -51,7 +59,33 @@ const Viewer = () => {
 
   return (
     <div className="viewer-container">
-      <video playsInline autoPlay muted></video>
+      <div className="video-container">
+        <video
+          playsInline
+          autoPlay
+          muted
+          className={`video-monitoring ${openVideo && "open-video"}`}
+        ></video>
+        <div
+          className={`button-container__monitoring ${
+            !openVideo && "button-container__monitoring-static"
+          }`}
+        >
+          <div className="hide-button">
+            {openVideo ? (
+              <i class="fas fa-minus" onClick={openVideoHandler}></i>
+            ) : (
+              <i class="fas fa-video" onClick={openVideoHandler}></i>
+            )}
+          </div>
+          <div className="close-button">
+            <i
+              class="fas fa-times"
+              onClick={() => history.push("/appointment")}
+            ></i>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

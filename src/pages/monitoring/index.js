@@ -1,9 +1,13 @@
 import io from "socket.io-client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { config } from "../../config";
-const Broadcaster = () => {
+import { useHistory } from "react-router-dom";
+import "./styles.scss";
+const Monitoring = () => {
   const socketRef = useRef();
   const peerConnections = {};
+  const [openVideo, setOpenVideo] = useState(false);
+  const history = useHistory();
   useEffect(async () => {
     socketRef.current = await io.connect("https://coba-cctv.herokuapp.com/");
 
@@ -50,10 +54,8 @@ const Broadcaster = () => {
 
     // Get camera and microphone
     const videoElement = document.querySelector("video");
-    const audioSelect = document.querySelector("select#audioSource");
     const videoSelect = document.querySelector("select#videoSource");
 
-    audioSelect.onchange = getStream;
     videoSelect.onchange = getStream;
 
     getStream().then(getDevices).then(gotDevices);
@@ -67,11 +69,7 @@ const Broadcaster = () => {
       for (const deviceInfo of deviceInfos) {
         const option = document.createElement("option");
         option.value = deviceInfo.deviceId;
-        if (deviceInfo.kind === "audioinput") {
-          option.text =
-            deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
-          audioSelect.appendChild(option);
-        } else if (deviceInfo.kind === "videoinput") {
+        if (deviceInfo.kind === "videoinput") {
           option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
           videoSelect.appendChild(option);
         }
@@ -84,10 +82,8 @@ const Broadcaster = () => {
           track.stop();
         });
       }
-      const audioSource = audioSelect.value;
       const videoSource = videoSelect.value;
       const constraints = {
-        audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
         video: { deviceId: videoSource ? { exact: videoSource } : undefined },
       };
       return navigator.mediaDevices
@@ -98,9 +94,7 @@ const Broadcaster = () => {
 
     function gotStream(stream) {
       window.stream = stream;
-      audioSelect.selectedIndex = [...audioSelect.options].findIndex(
-        (option) => option.text === stream.getAudioTracks()[0].label
-      );
+
       videoSelect.selectedIndex = [...videoSelect.options].findIndex(
         (option) => option.text === stream.getVideoTracks()[0].label
       );
@@ -113,24 +107,45 @@ const Broadcaster = () => {
     }
   });
 
+  const openVideoHandler = () => {
+    setOpenVideo(!openVideo);
+  };
+
   return (
     <div className="monitoring-container">
-      <section class="select">
-        <label for="audioSource">Audio source: </label>
-        <select id="audioSource"></select>
-      </section>
-
       <section class="select">
         <label for="videoSource">Video source: </label>
         <select id="videoSource"></select>
       </section>
-
-      <video playsInline autoPlay muted></video>
-      {/* <div className="start" onClick={connect}>
-        go
-      </div> */}
+      <div className="video-container">
+        <video
+          playsInline
+          autoPlay
+          muted
+          className={`video-monitoring ${openVideo && "open-video"}`}
+        ></video>
+        <div
+          className={`button-container__monitoring ${
+            !openVideo && "button-container__monitoring-static"
+          }`}
+        >
+          <div className="hide-button">
+            {openVideo ? (
+              <i class="fas fa-minus" onClick={openVideoHandler}></i>
+            ) : (
+              <i class="fas fa-video" onClick={openVideoHandler}></i>
+            )}
+          </div>
+          <div className="close-button">
+            <i
+              class="fas fa-times"
+              onClick={() => history.push("/appointment")}
+            ></i>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Broadcaster;
+export default Monitoring;
