@@ -3,8 +3,9 @@ import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
+import { useHistory } from "react-router-dom";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const dummyData = [
@@ -24,10 +25,16 @@ const dummyData = [
   },
 ];
 const Customer = () => {
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
+  useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+  }, []);
   return (
     <div className="costumer-container">
       {openPopUp && <AddMemberForm openPopUpHandler={openPopUpHandler} />}

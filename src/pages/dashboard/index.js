@@ -5,6 +5,7 @@ import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import fetchDummyAction from "../../store/action/fetchDummy";
+import { useHistory } from "react-router-dom";
 
 const listHeader = [
   "Id",
@@ -38,11 +39,17 @@ const dummyData = [
 ];
 
 const Dashboard = () => {
-  //example fetch reducer
   const dispatch = useDispatch();
+  const history = useHistory();
   const getDummyFromRedux = useSelector(
-    ({ fetchDummyReducer }) => fetchDummyReducer.dummy
+    ({ dummyReducer }) => dummyReducer.dummy
   );
+  useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+  }, []);
+  //example fetch reducer
 
   console.log(getDummyFromRedux, "<<<<<");
   useEffect(() => {

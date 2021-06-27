@@ -1,5 +1,6 @@
 import "./styles.scss";
 import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 const Register = () => {
   const history = useHistory();
@@ -11,6 +12,11 @@ const Register = () => {
   const goToLogin = (e) => {
     history.push("/login");
   };
+  useEffect(() => {
+    if (localStorage.access_token) {
+      history.push("/");
+    }
+  }, []);
   return (
     <div id="container-form__register">
       <div class="form-container">

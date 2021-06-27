@@ -5,7 +5,7 @@ import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import Payment from "../../components/payment";
 
@@ -45,6 +45,7 @@ const dummyData = [
 const Appointment = () => {
   const { search } = useLocation();
   const [isPayment, setIsPayment] = useState(false);
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
@@ -60,6 +61,13 @@ const Appointment = () => {
       setIsPayment(false);
     }
   }, [search]);
+
+  useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+  }, []);
+
   return (
     <div className="appointment-container">
       <SideMenu />
