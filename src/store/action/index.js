@@ -1,3 +1,3 @@
 import fetchDummyAction from "./fetchDummy";
-
-export { fetchDummyAction };
+import setUserAction from "./setUser";
+export { fetchDummyAction, setUserAction };

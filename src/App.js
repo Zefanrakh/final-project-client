@@ -1,13 +1,14 @@
-import { Provider } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import QRCode from "react-qr-code";
 import axios from "axios";
 import { useEffect } from "react";
 import routes from "./routes";
-import store from "./store";
 import "./App.css";
+import { setUserAction } from "./store/action";
 
 function App() {
+  const dispatch = useDispatch();
   // async function init() {
   //   const peer = createPeer();
   //   peer.addTransceiver("video", { direction: "recvonly" });
@@ -50,22 +51,37 @@ function App() {
   // useEffect(() => {
   //   init();
   // }, []);
+  useEffect(() => {
+    const access_token = localStorage.access_token;
+    if (access_token) {
+      axios("http://localhost:3000/" + "/user/getdata", {
+        method: "POST",
+        headers: {
+          access_token,
+        },
+      })
+        .then((res) => {
+          dispatch(setUserAction(res.data.user));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
   return (
-    <Provider store={store}>
-      <div className="App">
-        <Router>
-          <Switch>
-            {routes.map(({ path, component }) => {
-              return (
-                <Route path={path} exact>
-                  {component}
-                </Route>
-              );
-            })}
-          </Switch>
-        </Router>
-      </div>
-    </Provider>
+    <div className="App">
+      <Router>
+        <Switch>
+          {routes.map(({ path, component }, idx) => {
+            return (
+              <Route key={idx} path={path} exact>
+                {component}
+              </Route>
+            );
+          })}
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
