@@ -6,6 +6,7 @@ import FloatingButton from "../../components/floatingButton";
 import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const dummyData = [
@@ -27,6 +28,7 @@ const dummyData = [
 const Customer = () => {
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -34,7 +36,11 @@ const Customer = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-  }, []);
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+  }, [user]);
   return (
     <div className="costumer-container">
       {openPopUp && <AddMemberForm openPopUpHandler={openPopUpHandler} />}

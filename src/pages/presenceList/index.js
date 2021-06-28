@@ -6,6 +6,7 @@ import FloatingButton from "../../components/floatingButton";
 import AddPresenceForm from "../../components/addPresenceForm";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
@@ -22,6 +23,7 @@ const dummyData = [
 const PresenceList = () => {
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -29,7 +31,11 @@ const PresenceList = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-  }, []);
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+  }, [user]);
+
   return (
     <div className="presenceList-container">
       <SideMenu />
@@ -47,7 +53,7 @@ const PresenceList = () => {
           isPresenceListPage
         />
         <FloatingButton onClick={openPopUpHandler}>
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </FloatingButton>
       </div>
     </div>

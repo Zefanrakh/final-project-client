@@ -44,11 +44,16 @@ const Dashboard = () => {
   const getDummyFromRedux = useSelector(
     ({ dummyReducer }) => dummyReducer.dummy
   );
+
+  const user = useSelector(({ userReducer }) => userReducer.user);
   useEffect(() => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-  }, []);
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+  }, [user]);
   //example fetch reducer
 
   console.log(getDummyFromRedux, "<<<<<");

@@ -9,6 +9,7 @@ import { setUserAction } from "./store/action";
 
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector(({ userReducer }) => userReducer.user);
   // async function init() {
   //   const peer = createPeer();
   //   peer.addTransceiver("video", { direction: "recvonly" });
@@ -54,7 +55,7 @@ function App() {
   useEffect(() => {
     const access_token = localStorage.access_token;
     if (access_token) {
-      axios("http://localhost:3000" + "/user/getdata", {
+      axios("http://localhost:3001" + "/user/getdata", {
         method: "POST",
         headers: {
           access_token,
@@ -67,7 +68,8 @@ function App() {
           console.log(err);
         });
     }
-  });
+  }, []);
+  console.log(user);
   return (
     <div className="App">
       <Router>
