@@ -25,3 +25,21 @@ export function addCustomerAction(payload){
         })
     }
 }
+
+export function deleteCustomerAction(payload){
+    const id = payload
+    return(dispatch)=>{
+        fetch(`http://localhost:3000/customers/${id}`,{
+            method:'Delete',
+            headers:{
+                'Content-Type' : 'application/json',
+            }
+        })
+        .then(response=>{
+            response.json()
+        })
+        .then(task=>{
+            dispatch(fetchCustomerAction())
+        })
+    }
+}

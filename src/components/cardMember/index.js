@@ -1,4 +1,7 @@
+import { deleteCustomerAction } from '../../store/action'
+import { useDispatch } from 'react-redux';
 const Card = ({ customer }) => {
+  const dispatch = useDispatch()
   const { id, name, address, email, phoneNumber } = customer;
   return (
     <div className="card-container">
@@ -7,6 +10,7 @@ const Card = ({ customer }) => {
       <div className="text-header">{address}</div>
       <div className="text-header">{email}</div>
       <div className="text-header">{phoneNumber}</div>
+      <button onClick={()=>dispatch(deleteCustomerAction(id))} > Delete </button>
     </div>
   );
 };

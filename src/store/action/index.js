@@ -1,4 +1,4 @@
 import fetchDummyAction from "./fetchDummy";
-import {fetchCustomerAction,addCustomerAction} from "./customerAction"
+import {fetchCustomerAction,addCustomerAction, deleteCustomerAction} from "./customerAction"
 
-export { fetchDummyAction, fetchCustomerAction,addCustomerAction };
+export { fetchDummyAction, fetchCustomerAction,addCustomerAction, deleteCustomerAction };
