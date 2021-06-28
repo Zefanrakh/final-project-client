@@ -12,10 +12,18 @@ const Viewer = () => {
   const { search } = useLocation();
   const params = useParams();
 
-  // useEffect(() => {
-  //   const parsed = queryString.parse(search);
-  //   const decodeQuery = jwt.verify(parsed.token, "");
-  // }, []);
+  useEffect(() => {
+    const parsed = queryString.parse(search);
+    try {
+      const dateToday = new Date().toISOString().substring(0, 10);
+      const decodeQuery = jwt.verify(parsed.token, "123456");
+      if (dateToday !== decodeQuery.presenceDate) {
+        history.push("/");
+      }
+    } catch (error) {
+      history.push("/");
+    }
+  }, []);
 
   const connectionHandler = async () => {
     socketRef.current = await io.connect(baseUrl);
