@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { fetchPresence } from "../../store/action"
 import { useDispatch, useSelector} from "react-redux"
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
@@ -16,6 +17,7 @@ const PresenceList = () => {
   const history = useHistory();
   const data = useSelector(state => state.fetchPresenceReducer.presenceList)
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -23,8 +25,13 @@ const PresenceList = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+ 
     dispatch(fetchPresence())
-  },[])
+  },[user])
   
   return (
     <div className="presenceList-container">
@@ -43,7 +50,7 @@ const PresenceList = () => {
           isPresenceListPage
         />
         <FloatingButton onClick={openPopUpHandler}>
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </FloatingButton>
       </div>
     </div>

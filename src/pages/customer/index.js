@@ -8,6 +8,7 @@ import AddMemberForm from "../../components/addMemberForm";
 import { fetchCustomer } from "../../store/action"
 import { useDispatch, useSelector} from "react-redux"
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const dummyData = [
@@ -31,6 +32,7 @@ const Customer = () => {
   const data = useSelector(state => state.fetchCustomerReducer.customers)
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -38,11 +40,17 @@ const Customer = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+
     dispatch(fetchCustomer())
-  },[])
+  },[user])
   if(!data){
     return <p>Loading...</p>
   }
+
 
   return (
     <div className="costumer-container">

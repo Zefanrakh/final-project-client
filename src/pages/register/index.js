@@ -40,7 +40,7 @@ const Register = () => {
         setEmail("");
         Swal.fire({
           position: "top-end",
-          text: "We've sent an verification link to your email count",
+          text: "We've sent an verification link to your email account",
           showConfirmButton: false,
           timer: 1500,
           timerProgressBar: true,
