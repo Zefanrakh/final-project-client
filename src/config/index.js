@@ -3,10 +3,16 @@ export const config = {
     {
       urls: "stun:stun.stunprotocol.org",
     },
+    // {
+    //   urls: "turn:numb.viagenie.ca",
+    //   credential: "muazkh",
+    //   username: "webrtc@live.com",
+    // },
     {
-      urls: "turn:numb.viagenie.ca",
-      credential: "muazkh",
-      username: "webrtc@live.com",
+      username:
+        "dc2d2894d5a9023620c467b0e71cfa6a35457e6679785ed6ae9856fe5bdfa269",
+      credential: "tE2DajzSJwnsSbc123",
+      urls: "turn:global.turn.twilio.com:3478?transport=udp",
     },
   ],
 };

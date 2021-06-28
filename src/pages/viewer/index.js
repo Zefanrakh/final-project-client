@@ -14,25 +14,14 @@ const Viewer = () => {
 
   // useEffect(() => {
   //   const parsed = queryString.parse(search);
-  //   const decodeQuery = jwt.verify(parsed.query, "privateKey");
-  //   const today = new Date().getTime();
-  //   const from = new Date(decodeQuery.startDate).getTime();
-  //   const to = new Date(decodeQuery.endDate).getTime();
-  //   const withinRange = today >= from && today <= to;
-
-  //   if (!withinRange) {
-  //     history.push("/appointment?message=not-avalaible");
-  //   }
+  //   const decodeQuery = jwt.verify(parsed.token, "");
   // }, []);
-
-  console.log(params);
 
   const connectionHandler = async () => {
     socketRef.current = await io.connect(baseUrl);
 
     const video = document.querySelector("video");
     let peerConnection = {};
-    console.log(`-${params.cameraId}`);
 
     socketRef.current.on("offer" + `-${params.cameraId}`, (id, description) => {
       peerConnection = new RTCPeerConnection(config);
