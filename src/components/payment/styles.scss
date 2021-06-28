@@ -1,0 +1,146 @@
+.payment-container {
+  margin: 16px;
+  display: flex;
+  box-sizing: border-box;
+  .text-title {
+    font-family: "Montserrat", sans-serif;
+    color: #5c5d61;
+  }
+
+  .payment-container__left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    box-sizing: border-box;
+    margin-right: 16px;
+  }
+
+  .payment-container__right {
+    flex: 1;
+    box-sizing: border-box;
+  }
+
+  .checkout-container {
+    background: white;
+    box-shadow: 6px 5px 4px rgba(122, 122, 122, 0.212);
+    border-radius: 12px;
+    padding: 16px 24px 24px 16px;
+
+    button {
+      height: 36px;
+      width: 100%;
+      margin-top: 16px;
+      background: rgb(241, 92, 96);
+      color: white;
+      border-radius: 16px;
+      font-size: 16px;
+    }
+    .strip-container {
+      color: #bfbbbb;
+      margin-top: 10px;
+    }
+
+    .text-container {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+
+      .text-subtitle {
+        font-size: 14px;
+        color: #6d6565;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .text {
+        font-size: 14px;
+        color: #6d6565;
+      }
+    }
+  }
+
+  .payment-method__container {
+    background: white;
+    box-shadow: 6px 5px 4px rgba(122, 122, 122, 0.212);
+    border-radius: 12px;
+    padding: 16px 24px 24px 16px;
+    width: 100%;
+    box-sizing: border-box;
+
+    .choose-payment__container {
+      display: flex;
+      margin-top: 16px;
+
+      .payment-method {
+        width: 150px;
+        background: #e0dada;
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: grey;
+        border-radius: 12px;
+        flex-direction: column;
+        font-size: 12px;
+        box-shadow: 4px 3px 2px -1px rgba(122, 122, 122, 0.212);
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        .icon {
+          font-size: 30px;
+          margin-bottom: 4px;
+        }
+      }
+
+      .active {
+        background: rgba(#f15c60, 0.8);
+        color: white;
+      }
+    }
+  }
+
+  .payment-bank__container {
+    box-sizing: border-box;
+    width: 100%;
+    background: white;
+    box-shadow: 6px 5px 4px rgba(122, 122, 122, 0.212);
+    border-radius: 12px;
+    padding: 16px 24px 24px 16px;
+    margin-top: 18px;
+
+    .bank-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .image-container {
+        position: relative;
+        width: 180px;
+        height: 80px;
+        object-fit: cover;
+        object-position: center;
+        margin: 8px;
+        // border: 1px solid #dedcdc;
+        // border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+
+        .active {
+          background: #f15c60;
+          width: 100%;
+          height: 3px;
+          position: absolute;
+          border-radius: 32px;
+          bottom: 0;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import QRCode from "react-qr-code";
-import axios from "axios";
 import { useEffect } from "react";
+import axios from "axios";
 import routes from "./routes";
 import "./App.css";
 import { setUserAction } from "./store/action";
@@ -49,9 +48,6 @@ function App() {
   //   document.getElementById("video").srcObject = e.streams[0];
   // }
 
-  // useEffect(() => {
-  //   init();
-  // }, []);
   useEffect(() => {
     const access_token = localStorage.access_token;
     if (access_token) {

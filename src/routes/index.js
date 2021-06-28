@@ -6,10 +6,21 @@ import Appointment from "../pages/appointment";
 import Customer from "../pages/customer";
 import History from "../pages/history";
 import PresenceList from "../pages/presenceList";
+import Monitoring from "../pages/monitoring";
+import Viewer from "../pages/viewer";
+
 const routes = [
   {
     component: () => <Dashboard />,
     path: "/",
+  },
+  {
+    component: () => <Viewer />,
+    path: "/viewer/:cameraId",
+  },
+  {
+    component: () => <Monitoring />,
+    path: "/monitoring/:cameraId",
   },
   {
     component: () => <PresenceList />,
