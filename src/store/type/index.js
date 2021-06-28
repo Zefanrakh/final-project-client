@@ -1,0 +1,5 @@
+export const FETCH_DUMMY = "FETCH_DUMMY";
+export const FETCH_APPOINTMENT = "FETCH_APPOINTMENT";
+export const FETCH_CUSTOMER = "FETCH_CUSTOMER";
+export const FETCH_PRESENCE = "FETCH_PRESENCE";
+export const SET_USER = "SET_USER";

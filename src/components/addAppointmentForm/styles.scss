@@ -1,0 +1,160 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(black, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+
+  .find-customer {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 6px 5px 4px hsla(0, 0%, 47.8%, 0.212);
+    border: 1px solid rgba(grey, 0.2);
+    padding: 16px;
+    box-sizing: border-box;
+
+    .customer-name__container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+
+      .text-choose {
+        font-size: 14px;
+        color: #f15c60;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .add-appointment-container {
+    background: rgb(255, 255, 255);
+    width: 370px;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+
+    .category-container {
+      display: flex;
+      margin-bottom: 16px;
+      .category-text {
+        margin-right: 8px;
+        padding: 4px 16px;
+        border: none;
+        background: #e2e2e2;
+        border-radius: 16px;
+        color: grey;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .active {
+        background: #f15c60;
+        color: white;
+      }
+    }
+
+    .icon-close {
+      font-size: 20px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      color: #f15c60;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 500;
+      color: #426696;
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+
+      label {
+        font-size: 16px;
+        color: #464242;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      input,
+      textarea {
+        height: 36px;
+        font-size: 16px;
+        border-radius: 16px;
+        border: 1px solid grey;
+        padding: 0 16px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+        outline: none;
+        color: grey;
+      }
+      textarea {
+        height: 100px;
+        padding-top: 8px;
+      }
+
+      .image-container {
+        display: flex;
+      }
+
+      .button-upload {
+        height: 50px;
+        width: 50px;
+        border-radius: 16px;
+        font-size: 28px;
+        font-weight: 500;
+        color: grey;
+        outline: none;
+        background: none;
+        margin: 0;
+
+        .icon {
+          font-size: 20px !important;
+        }
+      }
+
+      .image-profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        margin-right: 8px;
+      }
+
+      .icon-redo {
+        font-size: 16px;
+      }
+
+      button,
+      .button-next__container {
+        height: 36px;
+        font-size: 16px;
+        color: white;
+        border-radius: 16px;
+        cursor: pointer;
+        background: #f15c60;
+        margin-top: 12px;
+        outline: none;
+      }
+
+      .button-next__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+      }
+    }
+  }
+}
