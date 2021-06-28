@@ -1,8 +1,17 @@
 import "./styles.scss";
 import { useState } from "react";
+import { useDispatch } from "react-redux"
+import { addCustomer } from "../../store/action"
 
 const AddMemberForm = ({ openPopUpHandler }) => {
+  const dispatch = useDispatch()
   const [imageUrl, setImageUrl] = useState("");
+  const [inputForm, setInputForm] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phoneNumber: "",
+  });
   function openUploadModal() {
     window.cloudinary
       .openUploadWidget(
@@ -19,20 +28,31 @@ const AddMemberForm = ({ openPopUpHandler }) => {
       .open();
   }
 
+  const saveDataCustomer = (e) => {
+    e.preventDefault()
+    console.log(inputForm);
+    dispatch(addCustomer(inputForm))
+    .then(({data}) => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
   return (
     <div className="overlay">
       <div class="add-member-container ">
         <div class="title">Add Member</div>
         <i class="fas fa-times icon-close" onClick={openPopUpHandler}></i>
-        <form>
+        <form onSubmit={saveDataCustomer}>
           <label>Name</label>
-          <input type="text" placeholder="Masukan Username" />
+          <input type="text" placeholder="Masukan Nama" onChange={(e) => setInputForm({...inputForm, name: e.target.value})} />
           <label>Email</label>
-          <input type="email" placeholder="Masukan email" />
+          <input type="email" placeholder="Masukan email" onChange={(e) => setInputForm({...inputForm, email: e.target.value})}/>
           <label>Address</label>
-          <textarea placeholder="Masukan address" />
+          <textarea placeholder="Masukan address" onChange={(e) => setInputForm({...inputForm, address: e.target.value})}/>
           <label>Number</label>
-          <input type="number" placeholder="Masukan No HP" />
+          <input type="number" placeholder="Masukan No HP" onChange={(e) => setInputForm({...inputForm, phoneNumber: e.target.value})}/>
           {/* <label>Image</label> */}
           {/* <div className="image-container">
             {imageUrl && (

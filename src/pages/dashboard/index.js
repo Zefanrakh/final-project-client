@@ -17,7 +17,7 @@ const listHeader = [
   "Status",
 ];
 
-const dummyData = [
+const data = [
   {
     id: "1",
     childName: "barack",
@@ -60,7 +60,7 @@ const Dashboard = () => {
       <SideMenu />
       <div className="main-container">
         <Header />
-        <MainBoard listHeader={listHeader} dummyData={dummyData} />
+        <MainBoard listHeader={listHeader} data={data} />
       </div>
     </div>
   );
