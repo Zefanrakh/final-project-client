@@ -8,6 +8,8 @@ import FloatingButton from "../../components/floatingButton";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import Payment from "../../components/payment";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAppointment } from "../../store/action";
 
 const listHeader = [
   "Id",
@@ -47,10 +49,15 @@ const Appointment = () => {
   const [isPayment, setIsPayment] = useState(false);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
 
+  const dispatch = useDispatch();
+  const data = useSelector(
+    (state) => state.fetchAppointmentReducer.appointments
+  );
   useEffect(() => {
     if (search) {
       const parsed = queryString.parse(search);
@@ -66,7 +73,14 @@ const Appointment = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+    setIsloading(true);
+    dispatch(fetchAppointment());
+    setIsloading(false);
   }, []);
+
+  if (isloading) {
+    return <p>Loading..</p>;
+  }
 
   return (
     <div className="appointment-container">
