@@ -23,11 +23,11 @@ const Register = () => {
     try {
       e.preventDefault();
       const config = {
-        url: "http://localhost:3001/verify",
+        url: "http://localhost:3000/verify",
         handleCodeInApp: true,
       };
 
-      const result = await axios("http://localhost:3000/user/checkexistemail", {
+      const result = await axios("http://localhost:3001/user/checkexistemail", {
         method: "POST",
         data: {
           email,

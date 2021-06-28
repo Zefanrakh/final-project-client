@@ -14,6 +14,7 @@ const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 const PresenceList = () => {
   const dispatch = useDispatch()
   const history = useHistory();
+  const data = useSelector(state => state.fetchPresenceReducer.presenceList)
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
