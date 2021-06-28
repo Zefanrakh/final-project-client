@@ -51,7 +51,7 @@ const Verify = () => {
       }
 
       const resultCheckUsername = await axios(
-        "http://localhost:3000/user/checkexistusername",
+        "http://localhost:3001/user/checkexistusername",
         {
           method: "POST",
           data: {
@@ -67,7 +67,7 @@ const Verify = () => {
         );
         if (result.user.emailVerified) {
           const resultUser = await axios(
-            "http://localhost:3000/user/register",
+            "http://localhost:3001/user/register",
             {
               method: "POST",
               data: {
