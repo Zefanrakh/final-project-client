@@ -16,7 +16,7 @@ const routes = [
   },
   {
     component: () => <Viewer />,
-    path: "/viewer/trgz",
+    path: "/viewer/:cameraId",
   },
   {
     component: () => <Monitoring />,
