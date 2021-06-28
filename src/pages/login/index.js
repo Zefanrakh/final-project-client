@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import setUser from "../../store/action/setUser";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const history = useHistory();
@@ -31,7 +32,6 @@ const Login = () => {
       data: {
         username,
         password,
-        role: "admin",
       },
     })
       .then((res) => {
@@ -41,7 +41,10 @@ const Login = () => {
         history.push("/");
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire({
+          title: err.response.data.message,
+          icon: "error",
+        });
       });
   };
   return (
