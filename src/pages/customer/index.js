@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
 import { fetchCustomer } from "../../store/action"
 import { useDispatch, useSelector} from "react-redux"
+import { useHistory } from "react-router-dom";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const dummyData = [
@@ -28,16 +29,21 @@ const dummyData = [
 const Customer = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.fetchCustomerReducer.customers)
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
   useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
     dispatch(fetchCustomer())
   },[])
   if(!data){
     return <p>Loading...</p>
   }
+
   return (
     <div className="costumer-container">
       {openPopUp && <AddMemberForm openPopUpHandler={openPopUpHandler} />}

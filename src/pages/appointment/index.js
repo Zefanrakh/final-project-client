@@ -7,6 +7,7 @@ import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAppointment } from "../../store/action"
+import { useHistory } from "react-router";
 
 const listHeader = [
   "Id",
@@ -40,6 +41,7 @@ const dummyData = [
 ];
 
 const Appointment = () => {
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const openPopUpHandler = () => {
@@ -49,12 +51,16 @@ const Appointment = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.fetchAppointmentReducer.appointments)
   useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
     setIsloading(true)
     dispatch(fetchAppointment())
     setIsloading(false)
   },[])
 
   if(isloading){ return <p>Loading..</p> }
+
   return (
     <div className="appointment-container">
       <SideMenu />

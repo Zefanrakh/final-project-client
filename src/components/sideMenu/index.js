@@ -8,6 +8,12 @@ const SideMenu = () => {
   const changePageHandler = (val) => {
     history.push(val);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    history.push("/login");
+  };
+
   const role = localStorage.getItem("role");
   return (
     <div className="side-menu">
@@ -19,7 +25,7 @@ const SideMenu = () => {
             className={`menu-container ${pathname === "/" && "active"}`}
             onClick={() => changePageHandler("/")}
           >
-            <i class="fas fa-home icon"></i>
+            <i className="fas fa-home icon"></i>
             Dashboard
           </div>
           <div
@@ -28,7 +34,7 @@ const SideMenu = () => {
             }`}
             onClick={() => changePageHandler("/customers")}
           >
-            <i class="fas fa-user-friends icon"></i>
+            <i className="fas fa-user-friends icon"></i>
             Customers
           </div>
           <div
@@ -37,7 +43,7 @@ const SideMenu = () => {
             }`}
             onClick={() => changePageHandler("/present-list")}
           >
-            <i class="fas fa-stream icon"></i>
+            <i className="fas fa-stream icon"></i>
             Present List
           </div>
         </>
@@ -47,7 +53,7 @@ const SideMenu = () => {
           className={`menu-container ${pathname === "/history" && "active"}`}
           onClick={() => changePageHandler("/history")}
         >
-          <i class="fas fa-history icon"></i>
+          <i className="fas fa-history icon"></i>
           History
         </div>
       )}
@@ -55,12 +61,12 @@ const SideMenu = () => {
         className={`menu-container ${pathname === "/appointment" && "active"}`}
         onClick={() => changePageHandler("/appointment")}
       >
-        <i class="fas fa-book-open icon"></i>
+        <i className="fas fa-book-open icon"></i>
         Appointment
       </div>
 
-      <div className="menu-container logout-container">
-        <i class="fas fa-sign-out icon"></i>
+      <div onClick={handleLogout} className="menu-container logout-container">
+        <i className="fas fa-sign-out icon"></i>
         Logout
       </div>
     </div>

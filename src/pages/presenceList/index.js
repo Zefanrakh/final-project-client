@@ -7,19 +7,24 @@ import AddPresenceForm from "../../components/addPresenceForm";
 import { useState, useEffect } from "react";
 import { fetchPresence } from "../../store/action"
 import { useDispatch, useSelector} from "react-redux"
+import { useHistory } from "react-router-dom";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
 const PresenceList = () => {
   const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchPresenceReducer.presenceList)
+  const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
   useEffect(() => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
     dispatch(fetchPresence())
   },[])
+  
   return (
     <div className="presenceList-container">
       <SideMenu />

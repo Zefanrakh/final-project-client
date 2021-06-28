@@ -22,9 +22,12 @@ const MainBoard = ({
   return (
     <div className="main-board">
       <div className="header__main-board">
-        {listHeader.map((text) => {
+        {listHeader.map((text, idx) => {
           return (
-            <div className={`${text === "Id" && "id-text"} text-header `}>
+            <div
+              key={idx}
+              className={`${text === "Id" && "id-text"} text-header `}
+            >
               {text}
             </div>
           );
@@ -45,7 +48,11 @@ const MainBoard = ({
           ) : isPresenceListPage ? (
             <CardPresenceList key={idx} user={user} />
           ) : (
-            <CardAppointment key={idx} user={user} isAppointment={isAppointment} />
+            <CardAppointment
+              key={idx}
+              user={user}
+              isAppointment={isAppointment}
+            />
           );
         })}
     </div>
