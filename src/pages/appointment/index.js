@@ -59,7 +59,7 @@ const Appointment = () => {
 
   const dispatch = useDispatch();
   const data = useSelector(
-    (state) => state.fetchAppointmentReducer.appointments
+    state => state.fetchAppointmentReducer.appointments
   );
   useEffect(() => {
     if (search) {

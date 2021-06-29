@@ -5,7 +5,7 @@ const addAppointmentAction = (payload) => (dispatch) => {
         return axios({
             url: 'http://localhost:3001/appointment',
             method: 'POST',
-            headers: {},
+            headers: {access_token: localStorage.getItem("access_token")},
             data: payload
         })
 };

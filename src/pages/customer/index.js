@@ -9,7 +9,7 @@ import { fetchCustomer } from "../../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
+const listHeader = ["Id", "Name", "Address", "Email", "Phone Number", "Action"];
 const dummyData = [
   {
     id: "1",

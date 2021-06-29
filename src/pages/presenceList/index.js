@@ -9,7 +9,7 @@ import { fetchPresence } from "../../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
+const listHeader = ["Id", "Child Name", "Dropper", "Pickupper", "Time", "Date","Qr-Code"];
 
 const PresenceList = () => {
   const dispatch = useDispatch();
