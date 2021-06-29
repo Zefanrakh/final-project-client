@@ -5,23 +5,16 @@ import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import AddPresenceForm from "../../components/addPresenceForm";
 import { useState, useEffect } from "react";
+import { fetchPresence } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
 
-const dummyData = [
-  {
-    id: "1",
-    dropperName: "Jao",
-    pickuperName: "Jerome",
-    pickupTime: "09:22",
-    presenceDate: "27/28/2001",
-  },
-];
-
 const PresenceList = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const data = useSelector((state) => state.fetchPresenceReducer.presenceList);
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
   const result = useSelector(
@@ -34,9 +27,12 @@ const PresenceList = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+
     if (user && user.role === "customer") {
       history.push("/appointment");
     }
+
+    dispatch(fetchPresence());
   }, [user]);
 
   return (
@@ -44,15 +40,12 @@ const PresenceList = () => {
       <SideMenu />
       <div className="main-container">
         {openPopUp && (
-          <AddPresenceForm
-            openPopUpHandler={openPopUpHandler}
-            dummyData={dummyData}
-          />
+          <AddPresenceForm openPopUpHandler={openPopUpHandler} data={data} />
         )}
         <Header />
         <MainBoard
           listHeader={listHeader}
-          dummyData={result.length === 0 ? dummyData : result}
+          data={result.length === 0 ? data : result}
           isPresenceListPage
         />
         <FloatingButton onClick={openPopUpHandler}>

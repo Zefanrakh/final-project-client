@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 const MainBoard = ({
   isAppointment,
   listHeader,
-  dummyData,
+  data,
   isMemberPage,
   isPresenceListPage,
 }) => {
@@ -42,7 +42,7 @@ const MainBoard = ({
       )}
 
       {!isLoading &&
-        dummyData.map((user, idx) => {
+        data.map((user, idx) => {
           return isMemberPage ? (
             <CardMember key={idx} user={user} />
           ) : isPresenceListPage ? (

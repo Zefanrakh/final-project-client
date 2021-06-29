@@ -50,7 +50,7 @@ const Dashboard = () => {
         <Header />
         <MainBoard
           listHeader={listHeader}
-          dummyData={result.length === 0 ? dummyData : result}
+          data={result.length === 0 ? data : result}
         />
       </div>
     </div>

@@ -1,10 +1,16 @@
 import { combineReducers } from "redux";
 import dummyReducer from "./dummyReducer";
-import searchResultReducer from "./searchResultReducer";
 import userReducer from "./userReducer";
+import fetchAppointmentReducer from "./fetchAppointmentReducer";
+import fetchCustomerReducer from "./fetchCustomerReducer";
+import fetchPresenceReducer from "./fetchPresenceReducer";
+import searchResultReducer from "./searchResultReducer";
 
 export default combineReducers({
-  userReducer,
   dummyReducer,
+  fetchAppointmentReducer,
+  fetchCustomerReducer,
+  fetchPresenceReducer,
+  userReducer,
   searchResultReducer,
 });
