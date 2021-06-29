@@ -5,10 +5,9 @@ import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
-import { fetchCustomer } from "../../store/action"
-import { useDispatch, useSelector} from "react-redux"
+import { fetchCustomer } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const dummyData = [
@@ -28,8 +27,8 @@ const dummyData = [
   },
 ];
 const Customer = () => {
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchCustomerReducer.customers)
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.fetchCustomerReducer.customers);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
@@ -45,12 +44,11 @@ const Customer = () => {
       history.push("/appointment");
     }
 
-    dispatch(fetchCustomer())
-  },[user])
-  if(!data){
-    return <p>Loading...</p>
+    dispatch(fetchCustomer());
+  }, [user]);
+  if (!data) {
+    return <p>Loading...</p>;
   }
-
 
   return (
     <div className="costumer-container">
@@ -58,11 +56,7 @@ const Customer = () => {
       <SideMenu />
       <div className="main-container">
         <Header />
-        <MainBoard
-          listHeader={listHeader}
-          data={data}
-          isMemberPage={true}
-        />
+        <MainBoard listHeader={listHeader} data={data} isMemberPage={true} />
         <FloatingButton onClick={openPopUpHandler}>
           <i class="fas fa-plus"></i>
         </FloatingButton>

@@ -18,10 +18,10 @@ const Viewer = () => {
       const dateToday = new Date().toISOString().substring(0, 10);
       const decodeQuery = jwt.verify(parsed.token, "123456");
       if (dateToday !== decodeQuery.presenceDate) {
-        history.push("/");
+        history.push("/notfound?status=access-forbidden");
       }
     } catch (error) {
-      history.push("/");
+      history.push("/notfound?status=access-forbidden");
     }
   }, []);
 
