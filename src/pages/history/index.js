@@ -6,6 +6,7 @@ import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const listHeader = [
   "Id",
@@ -41,6 +42,7 @@ const dummyData = [
 const History = () => {
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -49,7 +51,10 @@ const History = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-  }, []);
+    if (user && user.role === "admin") {
+      history.push("/");
+    }
+  }, [user]);
 
   return (
     <div className="appointment-container">
