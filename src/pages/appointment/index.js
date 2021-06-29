@@ -6,6 +6,7 @@ import MainBoard from "../../components/mainBoard";
 import AddAppointmentForm from "../../components/addAppointmentForm";
 import FloatingButton from "../../components/floatingButton";
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 
 const listHeader = [
   "Id",
@@ -44,12 +45,16 @@ const Appointment = () => {
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
 
   useEffect(() => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
   }, []);
+  console.log(result);
   return (
     <div className="appointment-container">
       <SideMenu />
@@ -64,7 +69,7 @@ const Appointment = () => {
         <MainBoard
           isAppointment={true}
           listHeader={listHeader}
-          dummyData={dummyData}
+          dummyData={result.length === 0 ? dummyData : result}
         />
         <FloatingButton onClick={openPopUpHandler}>
           <i class="fas fa-plus"></i>

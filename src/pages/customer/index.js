@@ -29,6 +29,9 @@ const Customer = () => {
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -49,7 +52,7 @@ const Customer = () => {
         <Header />
         <MainBoard
           listHeader={listHeader}
-          dummyData={dummyData}
+          dummyData={result.length === 0 ? dummyData : result}
           isMemberPage={true}
         />
         <FloatingButton onClick={openPopUpHandler}>
