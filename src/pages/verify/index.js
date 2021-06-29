@@ -10,8 +10,14 @@ import Swal from "sweetalert2";
 const Verify = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+    profilePicture: "",
+    name: "",
+    address: "",
+    phoneNumber: 0,
+  });
   const goToLogin = (e) => {
     e.preventDefault();
     history.push("/login");
@@ -26,21 +32,66 @@ const Verify = () => {
     }
   }, []);
 
-  const handleUsernameChange = (e) => {
-    let value = e.target.value;
+  const uploadImage = () => {
+    const myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "dfz3v4x49",
+        uploadPreset: "jxnt73cg",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          let tempInput = { ...input };
+          tempInput.profilePicture = result.info.url;
+          setInput(tempInput);
+        }
+      }
+    );
+    myWidget.open();
+  };
+
+  const handleInputExceptPassword = (value, inputType) => {
     value = value.replace(/\s\s+/g, " ");
-    setUsername(value);
+    let tempInput = { ...input };
+    tempInput[inputType] = value;
+    setInput(tempInput);
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    let tempInput = { ...input };
+    tempInput.password = e.target.value;
+    setInput(tempInput);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    let tempInput = { ...input };
+    tempInput.phoneNumber = Number(String(e.target.value).slice(0, 12));
+    console.log(String(input.phoneNumber).length);
+    setInput(tempInput);
   };
 
   const handleSubmit = async (e) => {
     try {
+      const {
+        name,
+        username,
+        password,
+        profilePicture,
+        address,
+        phoneNumber,
+      } = input;
       e.preventDefault();
       const email = localStorage.emailForRegistration;
-      if (!username || !password || !email) {
+      console.log(input, email);
+      // return;
+      if (
+        !username ||
+        !password ||
+        !email ||
+        !profilePicture ||
+        !name ||
+        !address ||
+        !phoneNumber
+      ) {
         Swal.fire({
           icon: "error",
           title: "Please input all fields",
@@ -71,9 +122,13 @@ const Verify = () => {
             {
               method: "POST",
               data: {
+                name,
                 email,
                 username,
                 password,
+                phoneNumber,
+                address,
+                profilePicture,
               },
             }
           );
@@ -115,8 +170,6 @@ const Verify = () => {
       if (err.message.toLowerCase().includes("token")) {
         history.push("/register");
       }
-      // console.log(err.message);
-      // console.log(err.response);
     }
   };
 
@@ -126,14 +179,28 @@ const Verify = () => {
         <form id="form-user-login" autoComplete="off" onSubmit={handleSubmit}>
           <div className="label">Please Input Your Username and Password</div>
           <input
-            id="input-email"
+            id="input-name"
+            type="text"
+            // readOnly
+            // onFocus="this.removeAttribute('readonly');"
+            placeholder="Input your name"
+            autoComplete="off"
+            onChange={(e) => {
+              handleInputExceptPassword(e.target.value, "name");
+            }}
+            value={input.name}
+          />
+          <input
+            id="input-username"
             type="text"
             // readOnly
             // onFocus="this.removeAttribute('readonly');"
             placeholder="Input your username"
             autoComplete="off"
-            onChange={handleUsernameChange}
-            value={username}
+            onChange={(e) => {
+              handleInputExceptPassword(e.target.value, "username");
+            }}
+            value={input.username}
           />
           <input
             id="input-password"
@@ -143,13 +210,49 @@ const Verify = () => {
             placeholder="Input your password min 6 characters"
             autoComplete="off"
             onChange={handlePasswordChange}
-            value={password}
+            value={input.password}
           />
 
+          <input
+            id="input-address"
+            type="text"
+            // onFocus="this.removeAttribute('readonly');"
+            placeholder="Input your address"
+            autoComplete="off"
+            onChange={(e) => {
+              handleInputExceptPassword(e.target.value, "address");
+            }}
+            value={input.address}
+          />
+          <input
+            id="input-phoneNumber"
+            type="number"
+            // onFocus="this.removeAttribute('readonly');"
+            placeholder="082246335747"
+            autoComplete="off"
+            onChange={handlePhoneNumberChange}
+            value={input.phoneNumber !== 0 && input.phoneNumber}
+          />
+          <input
+            id="input-profilePicture"
+            type="text"
+            readOnly
+            // onFocus="this.removeAttribute('readonly');"
+            placeholder="Your profile image url"
+            autoComplete="off"
+            value={input.profilePicture}
+          />
+          <button
+            onClick={uploadImage}
+            style={{ width: "320px" }}
+            type="button"
+          >
+            Upload your profile image
+          </button>
           <button
             id="login-button"
             className="login-form"
-            disabled={password.length < 6}
+            disabled={input.password.length < 6}
           >
             Register
           </button>

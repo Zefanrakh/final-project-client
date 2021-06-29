@@ -25,6 +25,9 @@ const Dashboard = () => {
   const result = useSelector(
     ({ searchResultReducer }) => searchResultReducer.result
   );
+  const data = useSelector(
+    (state) => state.fetchAppointmentReducer.appointments
+  );
   // const getDummyFromRedux = useSelector(
   //   ({ dummyReducer }) => dummyReducer.dummy
   // );
