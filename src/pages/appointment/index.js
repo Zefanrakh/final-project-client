@@ -53,6 +53,9 @@ const Appointment = () => {
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
 
   const dispatch = useDispatch();
   const data = useSelector(
@@ -100,7 +103,7 @@ const Appointment = () => {
             <MainBoard
               isAppointment={true}
               listHeader={listHeader}
-              dummyData={dummyData}
+              dummyData={result.length === 0 ? dummyData : result}
             />
             <FloatingButton onClick={openPopUpHandler}>
               <i class="fas fa-plus"></i>

@@ -17,6 +17,9 @@ const PresenceList = () => {
   const data = useSelector((state) => state.fetchPresenceReducer.presenceList);
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -40,7 +43,11 @@ const PresenceList = () => {
           <AddPresenceForm openPopUpHandler={openPopUpHandler} data={data} />
         )}
         <Header />
-        <MainBoard listHeader={listHeader} data={data} isPresenceListPage />
+        <MainBoard
+          listHeader={listHeader}
+          data={result.length === 0 ? data : result}
+          isPresenceListPage
+        />
         <FloatingButton onClick={openPopUpHandler}>
           <i className="fas fa-plus"></i>
         </FloatingButton>

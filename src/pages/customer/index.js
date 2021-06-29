@@ -32,6 +32,9 @@ const Customer = () => {
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -56,7 +59,11 @@ const Customer = () => {
       <SideMenu />
       <div className="main-container">
         <Header />
-        <MainBoard listHeader={listHeader} data={data} isMemberPage={true} />
+        <MainBoard
+          listHeader={listHeader}
+          data={result.length === 0 ? data : result}
+          isMemberPage={true}
+        />
         <FloatingButton onClick={openPopUpHandler}>
           <i class="fas fa-plus"></i>
         </FloatingButton>
