@@ -25,9 +25,9 @@ const Dashboard = () => {
   const result = useSelector(
     ({ searchResultReducer }) => searchResultReducer.result
   );
-  // const getDummyFromRedux = useSelector(
-  //   ({ dummyReducer }) => dummyReducer.dummy
-  // );
+  const data = useSelector(
+     ({ dummyReducer }) => dummyReducer.dummy
+   );
 
   useEffect(() => {
     if (!localStorage.access_token) {

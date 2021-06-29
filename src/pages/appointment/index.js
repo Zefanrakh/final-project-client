@@ -59,7 +59,7 @@ const Appointment = () => {
 
   const dispatch = useDispatch();
   const data = useSelector(
-    (state) => state.fetchAppointmentReducer.appointments
+    state => state.fetchAppointmentReducer.appointments
   );
   useEffect(() => {
     if (search) {
@@ -103,7 +103,7 @@ const Appointment = () => {
             <MainBoard
               isAppointment={true}
               listHeader={listHeader}
-              dummyData={result.length === 0 ? dummyData : result}
+              data={result.length === 0 ? dummyData : result}
             />
             <FloatingButton onClick={openPopUpHandler}>
               <i class="fas fa-plus"></i>
