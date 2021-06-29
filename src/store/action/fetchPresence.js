@@ -6,7 +6,7 @@ const fetchPresenceAction = () => (dispatch) => {
         return axios({
             url: 'http://localhost:3001/presence',
             method: 'GET',
-            headers: {}
+            headers: {access_token: localStorage.getItem("access_token")}
         })
         .then(({data}) => {
             dispatch({
