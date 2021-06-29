@@ -12,20 +12,20 @@ function App() {
 
   useEffect(() => {
     const access_token = localStorage.access_token;
-    // if (access_token) {
-    //   axios("http://localhost:3001" + "/user/getdata", {
-    //     method: "POST",
-    //     headers: {
-    //       access_token,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       dispatch(setUserAction(res.data.user));
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
+    if (access_token) {
+      axios("http://localhost:3001" + "/user/getdata", {
+        method: "POST",
+        headers: {
+          access_token,
+        },
+      })
+        .then((res) => {
+          dispatch(setUserAction(res.data.user));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
   console.log(user);
   return (
