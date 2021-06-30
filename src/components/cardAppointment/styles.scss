@@ -4,14 +4,20 @@
   background: white;
   height: 50px;
   box-sizing: border-box;
-  border-radius: 8px;
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
   margin-bottom: 8px;
   position: relative;
-  box-shadow: 6px 5px 4px hsla(0, 0%, 47.8%, 0.212);
+  border-bottom: 2px solid #e4e1e1;
   text-overflow: ellipsis;
+
+  .icon-delete {
+    color: #f15c60;
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+  }
 
   .qr-code {
     position: fixed;

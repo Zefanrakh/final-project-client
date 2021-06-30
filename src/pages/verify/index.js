@@ -233,7 +233,24 @@ const Verify = () => {
             onChange={handlePhoneNumberChange}
             value={input.phoneNumber !== 0 && input.phoneNumber}
           />
-          <input
+          <label>Image Profile</label>
+          <div className="image-container">
+            {input.profilePicture && (
+              <img
+                alt="profile"
+                src={input.profilePicture}
+                className="image-profile"
+              />
+            )}
+            <button type="button" class="button-upload" onClick={uploadImage}>
+              {input.profilePicture ? (
+                <i class="fas fa-redo icon-redo"></i>
+              ) : (
+                "+"
+              )}
+            </button>
+          </div>
+          {/* <input
             id="input-profilePicture"
             type="text"
             readOnly
@@ -248,7 +265,7 @@ const Verify = () => {
             type="button"
           >
             Upload your profile image
-          </button>
+          </button> */}
           <button
             id="login-button"
             className="login-form"

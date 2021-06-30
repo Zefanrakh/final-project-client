@@ -5,6 +5,7 @@ import CardPresenceList from "../cardPresenceList";
 
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import React, { useEffect, useState } from "react";
+import { isEmpty } from "lodash";
 
 const MainBoard = ({
   isAppointment,
@@ -28,7 +29,6 @@ const MainBoard = ({
           );
         })}
       </div>
-
       {isLoading && (
         <SkeletonTheme color="white" highlightColor="#efefef">
           <p>
@@ -36,7 +36,11 @@ const MainBoard = ({
           </p>
         </SkeletonTheme>
       )}
-
+      {isEmpty(data) && (
+        <div className="data-notfound__container">
+          <img src="https://www.kanan.co/static/data_not_found-8ba65c1e24ea7bd4b50e0f69a4bef3f9.png" />
+        </div>
+      )}
       {!isLoading &&
         data &&
         data.map((user, idx) => {

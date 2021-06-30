@@ -133,7 +133,7 @@ const Dashboard = () => {
       <SideMenu />
       <div className="main-container">
         <div className="banner-container">
-          <CardBanner />
+          <CardBanner title="Hello Admin" subTitle="welcome in daycare web!" />
         </div>
         <div className="data-container">
           <Calendar onChange={setDatePicker} value={datePicker} />
