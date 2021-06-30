@@ -56,7 +56,7 @@ const History = () => {
       if (user.role === "admin") {
         history.push("/");
       }
-      dispatch(fetchAppointmentByCustomer(user.CustomerId));
+      dispatch(fetchAppointmentByCustomer(user.Customer.id));
     }
   }, [user]);
 

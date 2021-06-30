@@ -1,9 +1,18 @@
 import "./styles.scss";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
-import { addAppointment, fetchCustomer, fetchAppointment, fetchAppointmentByCustomer } from "../../store/action/"
-import { useDispatch, useSelector } from "react-redux"
-import { createInvoice, createPaymentDetail, setError } from "../../store/action/payment";
+import {
+  addAppointment,
+  fetchCustomer,
+  fetchAppointment,
+  fetchAppointmentByCustomer,
+} from "../../store/action/";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createInvoice,
+  createPaymentDetail,
+  setError,
+} from "../../store/action/payment";
 import { useHistory } from "react-router";
 
 const dummyDataMember = [
@@ -24,22 +33,22 @@ const dummyDataMember = [
 ];
 
 const AddAppointmentForm = ({ openPopUpHandler }) => {
-  const history = useHistory()
+  const history = useHistory();
   Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
-  }
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchCustomerReducer.customers)
-  const priceList = useSelector(state => state.priceReducer.priceList)
+  };
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.fetchCustomerReducer.customers);
+  const priceList = useSelector((state) => state.priceReducer.priceList);
   /// display price from the price find in pricelist
   // const price = priceList.find(item => item.package === selectedPackage && item.category === selectedCategory)
 
-  let now = new Date()
-  let nowStr = now.addDays(2).toISOString().substring(0, 10)
+  let now = new Date();
+  let nowStr = now.addDays(2).toISOString().substring(0, 10);
   const user = useSelector(({ userReducer }) => userReducer.user);
-  const role = user.role
+  const role = user.role;
   const [customerData, setCustomerData] = useState({});
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [inputCustomerValue, setInputCustomerValue] = useState([]);
@@ -62,108 +71,120 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   // })
 
   useEffect(() => {
-    dispatch(fetchCustomer())
-  }, [])
+    dispatch(fetchCustomer());
+  }, []);
   if (!data) {
-    return <p>Loading..</p>
+    return <p>Loading..</p>;
   }
   const onChangeHandler = (e) => {
     setSelectedCustomer({});
     setInputCustomerValue(e.target.value);
     const customers = data.filter((customer) => {
-      return e.target.value && customer.name.toLowerCase().includes(e.target.value.toLowerCase());
+      return (
+        e.target.value &&
+        customer.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
     });
     setCustomerData(customers);
   };
 
   const saveAppointment = async (e) => {
-    e.preventDefault()
-    let quantity = Number(packageQty)
-    let endDateValue = endDate
+    e.preventDefault();
+    let quantity = Number(packageQty);
+    let endDateValue = endDate;
     if (selectedPackage === "Daily") {
-      quantity = Number(getDailyQty())
+      quantity = Number(getDailyQty());
     } else {
-      endDateValue = getEndDate()
+      endDateValue = getEndDate();
     }
-    let status = 'belum bayar'
-    if (role === 'admin') {
-      status = 'sudah bayar'
+    let status = "belum bayar";
+    if (role === "admin") {
+      status = "sudah bayar";
     }
-    let CustomerId = Number(customerChoosed.id)
-    if (role === 'customer') {
-      CustomerId = user.CustomerId
+    let CustomerId = Number(selectedCustomer.id);
+    if (role === "customer") {
+      CustomerId = user.Customer.id;
     }
     const payload = {
       CustomerId: CustomerId,
-      childCategory,
-      packageCategory,
+      selectedCategory,
+      selectedPackage,
       childName,
       childAge: Number(ageValue),
       quantity,
       note,
       startDate,
       endDate: endDateValue,
-      status
-    }
+      status,
+    };
 
     //fetch price from price table, amount ==== price  <<<<<<<<<<<<<
     const invoicePayload = {
       amount: 500000,
       email: "test@email.com",
-      description: '${selectedPackage} - ${selectedCategory}' //  dummydata
-    }
+      description: "${selectedPackage} - ${selectedCategory}", //  dummydata
+    };
 
     try {
-      const appointment = await dispatch(addAppointment(payload))
-      if (role === 'admin') {
-        await dispatch(fetchAppointment())
+      const appointment = await dispatch(addAppointment(payload));
+      if (role === "admin") {
+        await dispatch(fetchAppointment());
       } else {
-        await dispatch(fetchAppointmentByCustomer(CustomerId))
+        await dispatch(fetchAppointmentByCustomer(CustomerId));
       }
-      const invoice = await dispatch(createInvoice(invoicePayload))
+      const invoice = await dispatch(createInvoice(invoicePayload));
       //dummyPrice and quantity
       const paymentPayload = {
         price: 500000,
         quantity: 2,
         AppointmentId: appointment.data.id,
         InvoiceId: invoice.data.id,
-      }
-      await dispatch(createPaymentDetail(paymentPayload))
+      };
+      await dispatch(createPaymentDetail(paymentPayload));
       //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
       //query or params
       // history.push(`/paymentDetail/${invoice.invoiceUrl}`)
     } catch (error) {
-      dispatch(setError(error))
+      dispatch(setError(error));
     }
-  }
+  };
 
   const changeStartDate = (e) => {
-    setStartDate(e.target.value)
-  }
+    setStartDate(e.target.value);
+  };
 
   const changeEndDate = (e) => {
-    setEndDate(e.target.value)
-  }
+    setEndDate(e.target.value);
+  };
 
   const getDailyQty = () => {
-    const formatedStartDate = new Date(startDate)
-    const formatedEndDate = new Date(endDate)
+    const formatedStartDate = new Date(startDate);
+    const formatedEndDate = new Date(endDate);
     console.log(formatedStartDate, formatedEndDate);
-    const dateDiff = (formatedEndDate.getTime() - formatedStartDate.getTime()) / (1000 * 3600 * 24) + 1
-    return dateDiff
-  }
+    const dateDiff =
+      (formatedEndDate.getTime() - formatedStartDate.getTime()) /
+        (1000 * 3600 * 24) +
+      1;
+    return dateDiff;
+  };
 
   const getEndDate = () => {
-    if (selectedPackage === 'weekly') {
-      const formatedStartDate = new Date(startDate)
-      const newEndDate = formatedStartDate.addDays((7 * packageQty) - 1).toISOString().substring(0, 10)
-      return newEndDate
-    } else if (selectedPackage === 'monthly') {
-      const formatedStartDate = new Date(startDate)
-      const newEndDate = formatedStartDate.addDays((30 * packageQty) - 1).toISOString().substring(0, 10)
-      return newEndDate
+    if (selectedPackage === "weekly") {
+      const formatedStartDate = new Date(startDate);
+      const newEndDate = formatedStartDate
+        .addDays(7 * packageQty - 1)
+        .toISOString()
+        .substring(0, 10);
+      return newEndDate;
+    } else if (selectedPackage === "monthly") {
+      const formatedStartDate = new Date(startDate);
+      const newEndDate = formatedStartDate
+        .addDays(30 * packageQty - 1)
+        .toISOString()
+        .substring(0, 10);
+      return newEndDate;
     }
-  }
+  };
 
   return (
     <div className="overlay">
@@ -176,15 +197,18 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
               {" "}
               <label>Choose Category</label>
               <div className="category-container">
-                <div className={`category-text ${selectedCategory === "Toddler" && "active"
+                <div
+                  className={`category-text ${
+                    selectedCategory === "Toddler" && "active"
                   }`}
                   onClick={() => setSelectedCategory("Toddler")}
                 >
                   Toddler
                 </div>
                 <div
-                  className={`category-text ${selectedCategory === "infant" && "active"
-                    }`}
+                  className={`category-text ${
+                    selectedCategory === "infant" && "active"
+                  }`}
                   onClick={() => setSelectedCategory("infant")}
                 >
                   Infant
@@ -193,46 +217,62 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
               <label>Choose Package</label>
               <div className="category-container">
                 <div
-                  className={`category-text ${selectedPackage === "Daily" && "active"
-                    }`}
+                  className={`category-text ${
+                    selectedPackage === "Daily" && "active"
+                  }`}
                   onClick={() => setSelectedPackage("Daily")}
                 >
                   Daily
                 </div>
                 <div
-                  className={`category-text ${selectedPackage === "weekly" && "active"
-                    }`}
+                  className={`category-text ${
+                    selectedPackage === "weekly" && "active"
+                  }`}
                   onClick={() => setSelectedPackage("weekly")}
                 >
                   Weekly
                 </div>
                 <div
-                  className={`category-text ${selectedPackage === "monthly" && "active"
-                    }`}
+                  className={`category-text ${
+                    selectedPackage === "monthly" && "active"
+                  }`}
                   onClick={() => setSelectedPackage("monthly")}
                 >
                   Monthly
                 </div>
               </div>
               <label>Start Date</label>
-              <input type="date" value={startDate} onChange={(e) => { changeStartDate(e) }} />
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => {
+                  changeStartDate(e);
+                }}
+              />
               {selectedPackage === "Daily" && (
                 <>
                   <label>End Date</label>
-                  <input type="date" value={endDate} onChange={(e) => { changeEndDate(e) }} />
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => {
+                      changeEndDate(e);
+                    }}
+                  />
                 </>
               )}
-              {
-                selectedPackage !== "Daily" &&
+              {selectedPackage !== "Daily" && (
                 <>
-                  <label>How many {selectedPackage === "monthly" ? "Month" : "Week"}</label>
+                  <label>
+                    How many {selectedPackage === "monthly" ? "Month" : "Week"}
+                  </label>
                   <input
                     type="number"
                     value={packageQty}
                     onChange={(e) => setPackageQty(e.target.value)}
                   />
                 </>
-              }
+              )}
               {role === "admin" && (
                 <>
                   <label>Find Customer</label>
@@ -270,7 +310,10 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
           {completedCategory && (
             <>
               <label>Child Name</label>
-              <input type="text" onChange={(e) => setChildName(e.target.value)} />
+              <input
+                type="text"
+                onChange={(e) => setChildName(e.target.value)}
+              />
               <label>Child Age</label>
               <input
                 type="number"

@@ -17,11 +17,13 @@ const SideMenu = () => {
     history.push("/login");
   };
 
-  // if (!user) {
-  //   return history.push('/login')
-  // }
+  if (!user) {
+    // return history.push('/login')
+    return <></>;
+  }
 
   const role = user.role;
+
   return (
     <div className="side-menu">
       <div className="logo">D-CARE</div>

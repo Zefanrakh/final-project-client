@@ -28,10 +28,12 @@ const PresenceList = () => {
   useEffect(() => {
     if (!localStorage.access_token) {
       history.push("/login");
+      return;
     }
 
     if (user && user.role === "customer") {
       history.push("/appointment");
+      return;
     }
 
     dispatch(fetchPresence());
