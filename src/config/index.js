@@ -28,4 +28,4 @@ export const config = {
   ],
 };
 
-export const baseUrl = "https://coba-cctv.herokuapp.com/";
+export const baseUrl = "http://localhost:3001/";
