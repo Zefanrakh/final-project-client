@@ -107,8 +107,8 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     }
     const payload = {
       CustomerId: CustomerId,
-      selectedCategory,
-      selectedPackage,
+      childCategory: selectedCategory,
+      packageCategory: selectedPackage,
       childName,
       childAge: Number(ageValue),
       quantity,
