@@ -1,6 +1,10 @@
+.main-board::-webkit-scrollbar {
+  display: none;
+}
+
 .main-board {
   height: 70vh;
-  overflow: scroll;
+  overflow-y: scroll;
   background: white;
   margin-top: 32px;
 
