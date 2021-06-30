@@ -54,6 +54,11 @@
     padding: 0;
     padding: 8px;
   }
+
+  .main-container::-webkit-scrollbar {
+    display: none;
+  }
+
   .main-container {
     width: 92%;
     padding: 16px 20px;
