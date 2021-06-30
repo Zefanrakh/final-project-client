@@ -1,14 +1,14 @@
 import { SET_ERROR, SET_INVOICE, SET_LOADING } from "../type"
-import { instanceAxios } from '../../helpers/api'
+import axios from 'axios'
 
 export const setLoading = (payload) => ({ type: SET_LOADING, payload })
 export const setError = (payload) => ({ type: SET_ERROR, payload })
 
 export const createInvoice = (payload) => async (dispatch) => {
-
+  console.log(payload,'di action===>');
   try {
-    const newInvoice = await instanceAxios({
-      url: '/checkout/invoice',
+    const newInvoice = await axios({
+      url: 'http://localhost:3001/checkout/invoice',
       method: 'POST',
       data: payload,
       headers: {
@@ -23,8 +23,8 @@ export const createInvoice = (payload) => async (dispatch) => {
 
 export const createPaymentDetail = (payload) => async (dispatch) => {
   try {
-    const paymentDetail = await instanceAxios({
-      url: '/paymentDetails',
+    const paymentDetail = await axios({
+      url: 'http://localhost:3001/paymentDetails',
       method: 'POST',
       data: payload,
       headers: {

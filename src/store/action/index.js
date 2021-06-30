@@ -5,6 +5,7 @@ import { fetchAppointment, addAppointment, fetchAppointmentByCustomer} from "./a
 import fetchPresence from "./fetchPresence";
 import setUserAction from "./setUser";
 import fetchSearchResult from "./fetchSearchResult";
+import {fetchPriceList} from "./price"
 
 export {
   fetchDummyAction,
@@ -17,5 +18,6 @@ export {
   deleteCustomer,
   setUserAction,
   fetchSearchResult,
-  fetchAppointmentByCustomer
+  fetchAppointmentByCustomer,
+  fetchPriceList
 };

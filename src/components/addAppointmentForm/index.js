@@ -6,6 +6,7 @@ import {
   fetchCustomer,
   fetchAppointment,
   fetchAppointmentByCustomer,
+  fetchPriceList
 } from "../../store/action/";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,6 +15,7 @@ import {
   setError,
 } from "../../store/action/payment";
 import { useHistory } from "react-router";
+import Swal from "sweetalert2";
 
 const dummyDataMember = [
   {
@@ -42,9 +44,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.fetchCustomerReducer.customers);
   const priceList = useSelector((state) => state.priceReducer.priceList);
-  /// display price from the price find in pricelist
-  // const price = priceList.find(item => item.package === selectedPackage && item.category === selectedCategory)
-
+  let price = []
   let now = new Date();
   let nowStr = now.addDays(2).toISOString().substring(0, 10);
   const user = useSelector(({ userReducer }) => userReducer.user);
@@ -61,6 +61,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const [selectedCategory, setSelectedCategory] = useState("Toddler");
   const [selectedPackage, setSelectedPackage] = useState("Daily");
   const [completedCategory, setCompletedCategory] = useState(false);
+  const [quantity, setQuantity] = useState(1)
 
   // const [input , setInput] = useState({
   //   note: '',
@@ -70,11 +71,17 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   //   endDDate:nowStr,
   // })
 
-  useEffect(() => {
-    dispatch(fetchCustomer());
+  useEffect( async () => {
+    await dispatch(fetchCustomer());
+    await dispatch(fetchPriceList());
   }, []);
+
   if (!data) {
     return <p>Loading..</p>;
+  }
+  /// display price from the price find in pricelist
+  if(priceList){
+    price = priceList.find(item => item.package === selectedPackage && item.category === selectedCategory)
   }
   const onChangeHandler = (e) => {
     setSelectedCustomer({});
@@ -87,13 +94,12 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     });
     setCustomerData(customers);
   };
-
   const saveAppointment = async (e) => {
     e.preventDefault();
-    let quantity = Number(packageQty);
+    setQuantity(Number(packageQty));
     let endDateValue = endDate;
     if (selectedPackage === "Daily") {
-      quantity = Number(getDailyQty());
+      setQuantity(Number(getDailyQty()));
     } else {
       endDateValue = getEndDate();
     }
@@ -119,42 +125,58 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     };
 
     //fetch price from price table, amount ==== price  <<<<<<<<<<<<<
+    console.log(selectedCustomer,'===>');
     const invoicePayload = {
-      amount: 500000,
-      email: "test@email.com",
-      description: "${selectedPackage} - ${selectedCategory}", //  dummydata
+      amount: price.price * quantity,
+      email: 'dudebahrulhayat@gmail.com',
+      description: `${selectedPackage} - ${selectedCategory}`,
     };
 
     try {
       const appointment = await dispatch(addAppointment(payload));
-      if (role === "admin") {
-        await dispatch(fetchAppointment());
+      if (role === 'admin') {
+        await dispatch(fetchAppointment())
+        openPopUpHandler()
       } else {
-        await dispatch(fetchAppointmentByCustomer(CustomerId));
+        await dispatch(fetchAppointmentByCustomer(CustomerId))
+        const invoice = await dispatch(createInvoice(invoicePayload))
+        console.log(invoice.data.invoiceUrl,'====>');
+        
+        //dummyPrice and quantity
+        const paymentPayload = {
+          price: price.price,
+          quantity: quantity,
+          AppointmentId: appointment.data.id,
+          InvoiceId: invoice.data.id,
+        }
+        await dispatch(createPaymentDetail(paymentPayload))
+        //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
+        //query or params
+        // history.push(`/paymentDetail/${invoice.invoiceUrl}`)
+        //window.location.href = invoice.data.invoiceUrl
+        openPopUpHandler()
+        window.open(
+          invoice.data.invoiceUrl,
+          '_blank'
+        );
       }
-      const invoice = await dispatch(createInvoice(invoicePayload));
-      //dummyPrice and quantity
-      const paymentPayload = {
-        price: 500000,
-        quantity: 2,
-        AppointmentId: appointment.data.id,
-        InvoiceId: invoice.data.id,
-      };
-      await dispatch(createPaymentDetail(paymentPayload));
-      //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
-      //query or params
-      // history.push(`/paymentDetail/${invoice.invoiceUrl}`)
     } catch (error) {
+      Swal.fire({
+        title: error.response.data.message,
+        icon: "error",
+      });
       dispatch(setError(error));
     }
   };
 
   const changeStartDate = (e) => {
     setStartDate(e.target.value);
+    getDailyQty()
   };
 
   const changeEndDate = (e) => {
     setEndDate(e.target.value);
+    getDailyQty()
   };
 
   const getDailyQty = () => {
@@ -165,18 +187,18 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
       (formatedEndDate.getTime() - formatedStartDate.getTime()) /
         (1000 * 3600 * 24) +
       1;
-    return dateDiff;
+    setQuantity(dateDiff)
   };
 
   const getEndDate = () => {
-    if (selectedPackage === "weekly") {
+    if (selectedPackage === "Weekly") {
       const formatedStartDate = new Date(startDate);
       const newEndDate = formatedStartDate
         .addDays(7 * packageQty - 1)
         .toISOString()
         .substring(0, 10);
       return newEndDate;
-    } else if (selectedPackage === "monthly") {
+    } else if (selectedPackage === "Monthly") {
       const formatedStartDate = new Date(startDate);
       const newEndDate = formatedStartDate
         .addDays(30 * packageQty - 1)
@@ -207,12 +229,13 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 </div>
                 <div
                   className={`category-text ${
-                    selectedCategory === "infant" && "active"
+                    selectedCategory === "Infant" && "active"
                   }`}
-                  onClick={() => setSelectedCategory("infant")}
+                  onClick={() => setSelectedCategory("Infant")}
                 >
                   Infant
                 </div>
+                Total price: {price.price * quantity}
               </div>
               <label>Choose Package</label>
               <div className="category-container">
@@ -226,17 +249,17 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 </div>
                 <div
                   className={`category-text ${
-                    selectedPackage === "weekly" && "active"
+                    selectedPackage === "Weekly" && "active"
                   }`}
-                  onClick={() => setSelectedPackage("weekly")}
+                  onClick={() => setSelectedPackage("Weekly")}
                 >
                   Weekly
                 </div>
                 <div
                   className={`category-text ${
-                    selectedPackage === "monthly" && "active"
+                    selectedPackage === "Monthly" && "active"
                   }`}
-                  onClick={() => setSelectedPackage("monthly")}
+                  onClick={() => setSelectedPackage("Monthly")}
                 >
                   Monthly
                 </div>
@@ -264,12 +287,15 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
               {selectedPackage !== "Daily" && (
                 <>
                   <label>
-                    How many {selectedPackage === "monthly" ? "Month" : "Week"}
+                    How many {selectedPackage === "Monthly" ? "Month" : "Week"}
                   </label>
                   <input
                     type="number"
                     value={packageQty}
-                    onChange={(e) => setPackageQty(e.target.value)}
+                    onChange={(e) => {
+                      setPackageQty(e.target.value)
+                      setQuantity(e.target.value)
+                    }}
                   />
                 </>
               )}
