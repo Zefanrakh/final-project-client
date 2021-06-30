@@ -8,6 +8,7 @@ const Payment = ({ query }) => {
   const [bankType, setBankType] = useState("bri");
   const [payloadFromQuery, setPayloadFromQuery] = useState({});
 
+
   useEffect(() => {
     setPayloadFromQuery(jwt.verify(query.payment, "privateKey"));
   }, []);
