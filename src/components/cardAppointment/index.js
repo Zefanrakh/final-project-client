@@ -12,6 +12,7 @@ const Card = ({ user, isAppointment }) => {
     status,
     type,
   } = user;
+  
   const role = localStorage.getItem("role");
 
   const history = useHistory();

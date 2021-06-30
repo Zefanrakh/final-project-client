@@ -6,7 +6,7 @@ export const addCustomer = (payload) => (dispatch) => {
         return axios({
             url: 'http://localhost:3001/customers',
             method: 'POST',
-            headers: {},
+            headers: {access_token: localStorage.getItem("access_token")},
             data: payload
         })
 };
@@ -16,7 +16,7 @@ export const fetchCustomer = () => (dispatch) => {
         return axios({
             url: 'http://localhost:3001/customers',
             method: 'GET',
-            headers: {}
+            headers: {access_token: localStorage.getItem("access_token")}
         })
         .then(({data}) => {
             dispatch({
@@ -34,7 +34,7 @@ export function deleteCustomer(payload){
     return(dispatch)=>{
         fetch(`http://localhost:3001/customers/${id}`,{
             method:'Delete',
-            headers:{
+            headers:{access_token: localStorage.getItem("access_token"),
                 'Content-Type' : 'application/json',
             }
         })

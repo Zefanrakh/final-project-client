@@ -1,8 +1,7 @@
 import fetchDummyAction from "./fetchDummy";
-import addAppointment from "./addAppointment";
-import fetchAppointment from "./fetchAppointment";
 import addPresence from "./addPresence";
 import { fetchCustomer, addCustomer, deleteCustomer } from "./customerAction";
+import { fetchAppointment, addAppointment, fetchAppointmentByCustomer} from "./appointmentAction";
 import fetchPresence from "./fetchPresence";
 import setUserAction from "./setUser";
 import fetchSearchResult from "./fetchSearchResult";
@@ -18,4 +17,5 @@ export {
   deleteCustomer,
   setUserAction,
   fetchSearchResult,
+  fetchAppointmentByCustomer
 };

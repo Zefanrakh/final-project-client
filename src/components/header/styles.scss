@@ -6,7 +6,6 @@
   padding: 16px 16px;
   box-sizing: border-box;
   align-items: center;
-  margin-left: 8px;
   border-radius: 8px;
   box-shadow: 6px 10px 12px hsla(0, 0%, 47.8%, 0.212);
 
@@ -45,7 +44,7 @@
       width: 36px;
       height: 36px;
       object-fit: cover;
-      border-radius: 50%;
+      border-radius: 16px;
       margin-right: 12px;
     }
   }

@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
-import { addAppointment, fetchCustomer } from "../../store/action/"
+import { addAppointment, fetchCustomer, fetchAppointment, fetchAppointmentByCustomer } from "../../store/action/"
 import { useDispatch, useSelector } from "react-redux"
 import { createInvoice, createPaymentDetail, setError } from "../../store/action/payment";
 import { useHistory } from "react-router";
@@ -38,7 +38,8 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
 
   let now = new Date()
   let nowStr = now.addDays(2).toISOString().substring(0, 10)
-  const role = localStorage.getItem("role");
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const role = user.role
   const [customerData, setCustomerData] = useState({});
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [inputCustomerValue, setInputCustomerValue] = useState([]);
@@ -67,13 +68,11 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     return <p>Loading..</p>
   }
   const onChangeHandler = (e) => {
-    setSelectedCustomer({});  
+    setSelectedCustomer({});
     setInputCustomerValue(e.target.value);
     const customers = data.filter((customer) => {
-      console.log(customer);
       return e.target.value && customer.name.toLowerCase().includes(e.target.value.toLowerCase());
     });
-    console.log(customers);
     setCustomerData(customers);
   };
 
@@ -90,10 +89,14 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     if (role === 'admin') {
       status = 'sudah bayar'
     }
+    let CustomerId = Number(customerChoosed.id)
+    if (role === 'customer') {
+      CustomerId = user.CustomerId
+    }
     const payload = {
-      CustomerId: Number(selectedCustomer.id),
-      selectedCategory,
-      selectedPackage,
+      CustomerId: CustomerId,
+      childCategory,
+      packageCategory,
       childName,
       childAge: Number(ageValue),
       quantity,
@@ -112,13 +115,18 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
 
     try {
       const appointment = await dispatch(addAppointment(payload))
+      if (role === 'admin') {
+        await dispatch(fetchAppointment())
+      } else {
+        await dispatch(fetchAppointmentByCustomer(CustomerId))
+      }
       const invoice = await dispatch(createInvoice(invoicePayload))
       //dummyPrice and quantity
       const paymentPayload = {
         price: 500000,
         quantity: 2,
-        AppointmentId: appointment.id,
-        InvoiceId: invoice.id,
+        AppointmentId: appointment.data.id,
+        InvoiceId: invoice.data.id,
       }
       await dispatch(createPaymentDetail(paymentPayload))
       //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
