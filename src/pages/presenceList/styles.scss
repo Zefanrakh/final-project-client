@@ -62,5 +62,7 @@
   .main-container {
     width: 92%;
     padding: 16px 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }

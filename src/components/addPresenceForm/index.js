@@ -7,23 +7,6 @@ import { addPresence } from "../../store/action";
 import QRCode from "react-qr-code";
 
 const AddMemberForm = ({ openPopUpHandler }) => {
-  const [imageUrl, setImageUrl] = useState("");
-  function openUploadModal() {
-    window.cloudinary
-      .openUploadWidget(
-        {
-          cloud_name: "dfh39qfib",
-          upload_preset: "rwfxz7rj",
-        },
-        (error, result) => {
-          if (!error && result && result.event === "success") {
-            setImageUrl(result.info.url);
-          }
-        }
-      )
-      .open();
-  }
-
   const dispatch = useDispatch();
   let now = new Date();
   let nowStr = now.toISOString().substring(0, 10);
@@ -171,10 +154,6 @@ const AddMemberForm = ({ openPopUpHandler }) => {
           </>
         ) : (
           <div className="qr-code__container">
-            <i
-              className="fas fa-times icon-close"
-              onClick={openPopUpHandler}
-            ></i>
             <div id="print-area">
               <QRCode value={linkAkses} />
             </div>
@@ -182,6 +161,10 @@ const AddMemberForm = ({ openPopUpHandler }) => {
             <div onClick={() => printDiv("print-area")}>
               <i className="fas fa-print print-button"></i>
             </div>
+            <i
+              className="fas fa-times icon-close"
+              onClick={openPopUpHandler}
+            ></i>
           </div>
         )}
       </div>

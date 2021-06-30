@@ -9,6 +9,13 @@
   justify-content: center;
   align-items: center;
   z-index: 4;
+  .icon-close-qr {
+    color: #f15c60;
+    cursor: pointer;
+    font-size: 20px;
+    width: 100%;
+    text-align: right;
+  }
 
   .qr-code__container {
     margin-top: 32px;

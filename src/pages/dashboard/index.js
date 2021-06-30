@@ -8,43 +8,13 @@ import CardBanner from "../../components/cardBanner";
 import SideMenu from "../../components/sideMenu";
 import { useHistory } from "react-router-dom";
 import BarChart from "../../components/barChart";
-import { fetchCustomer } from "../../store/action";
-import "./styles.scss";
+import {
+  fetchCustomer,
+  fetchAppointment,
+  fetchPresence,
+} from "../../store/action";
 
-const dummyAppointment = [
-  {
-    date: new Date("2021-01-01"),
-    status: "canceled",
-  },
-  {
-    date: new Date("2021-02-02"),
-    status: "canceled",
-  },
-  {
-    date: new Date("2021-03-07"),
-    status: "canceled",
-  },
-  {
-    date: new Date("2021-04-03"),
-    status: "canceled",
-  },
-  {
-    status: "canceled",
-    date: new Date("2021-05-01"),
-  },
-  {
-    date: new Date("2021-06-29"),
-    status: "canceled",
-  },
-  {
-    date: new Date("2021-06-30"),
-    status: "canceled",
-  },
-  {
-    date: new Date("2021-06-29"),
-    status: "canceled",
-  },
-];
+import "./styles.scss";
 
 const month = [
   "January",
@@ -66,27 +36,94 @@ const Dashboard = () => {
   const [datePicker, setDatePicker] = useState(new Date());
   const history = useHistory();
   const user = useSelector(({ userReducer }) => userReducer.user);
-  const [filteredResult, setFilteredResult] = useState({
-    filteredByToday: [],
-    filterByMonth: [],
+  const [filteredByToday, setFilteredByToday] = useState([]);
+  const [filterByChildType, setFilterByChildType] = useState({
+    toddler: 0,
+    infant: 0,
   });
-
+  const [filterByMonth, setFilterByMonth] = useState([]);
+  const appointments = useSelector(
+    (state) => state.fetchAppointmentReducer.appointments
+  );
   const customers = useSelector(
     (state) => state.fetchCustomerReducer.customers
   );
 
+  const presenceList = useSelector(
+    (state) => state.fetchPresenceReducer.presenceList
+  );
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchingAllData = async () => {
+    await dispatch(fetchCustomer());
+    await dispatch(fetchAppointment());
+    await dispatch(fetchPresence());
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const filteredByToday = dummyAppointment.filter((item) => {
-      return (
-        item.date.toLocaleString().substring(0, 10) ===
-        datePicker.toLocaleString().substring(0, 10)
-      );
+    fetchingAllData();
+  }, []);
+
+  const filterdDataHandler = async () => {
+    const filteredByToday = await appointments.filter((item) => {
+      if (
+        new Date(datePicker).toDateString() ===
+        new Date(item.startDate).toDateString()
+      ) {
+        return true;
+      }
+
+      var today = new Date(datePicker).getTime();
+      var from = new Date(item.startDate).getTime();
+      var to = new Date(item.endDate).getTime();
+      var withinRange = today >= from && today <= to;
+      return withinRange;
     });
 
-    setFilteredResult({ ...filteredResult, filteredByToday });
-  }, [datePicker]);
+    setFilteredByToday(filteredByToday);
+  };
 
   useEffect(() => {
+    filterdDataHandler();
+  }, [datePicker, appointments]);
+
+  const filteredByMonthHandler = async (monthObj) => {
+    await appointments.forEach((data) => {
+      month.forEach((item, idx) => {
+        if (
+          new Date(data.startDate).getMonth() === idx ||
+          new Date(data.endDate).getMonth() === idx
+        ) {
+          monthObj[item] += 1;
+        }
+      });
+    });
+
+    const objToArr = await Object.values(monthObj);
+    setFilterByMonth(objToArr);
+  };
+
+  const filteredByChildType = async () => {
+    const obj = {
+      toddler: 0,
+      infant: 0,
+    };
+    await appointments.forEach((item) => {
+      console.log(item);
+      if (item.Price.category === "Toddler") {
+        obj.toddler += 1;
+      } else {
+        obj.infant += 1;
+      }
+    });
+
+    setFilterByChildType(obj);
+  };
+
+  useEffect(async () => {
     const monthObj = {
       January: 0,
       February: 0,
@@ -102,28 +139,16 @@ const Dashboard = () => {
       Desember: 0,
     };
 
-    dummyAppointment.forEach((data) => {
-      month.forEach((item, idx) => {
-        if (data.date.getMonth() === idx) {
-          monthObj[item] += 1;
-        }
-      });
-    });
-
-    const objToArr = Object.values(monthObj);
-
-    setFilteredResult({ ...filteredResult, filterByMonth: objToArr });
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchCustomer());
-  }, []);
+    if (appointments.length) {
+      filteredByMonthHandler(monthObj);
+      filteredByChildType();
+    }
+  }, [appointments]);
 
   useEffect(() => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    console.log(user, "DI DASHBOARD");
     if (user && user.role === "customer") {
       history.push("/appointment");
     }
@@ -131,95 +156,114 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <SideMenu />
-      <div className="main-container">
-        <div className="banner-container">
-          <CardBanner title="Hello Admin" subTitle="welcome in daycare web!" />
-        </div>
-        <div className="data-container">
-          <Calendar onChange={setDatePicker} value={datePicker} />
-          <div className="info-container">
-            <div className="chart-container">
-              <div className="box-container">
-                <Doughnut
-                  data={{
-                    labels: ["Infant", "Toddler"],
-                    datasets: [
-                      {
-                        data: [30, 70],
-                        backgroundColor: [
-                          "rgb(255, 99, 132)",
-                          "rgb(255, 205, 86)",
+      <>
+        <SideMenu />
+        {!isLoading && (
+          <div className="main-container">
+            <div className="banner-container">
+              <CardBanner
+                title="Hello Admin"
+                subTitle="welcome in daycare web!"
+              />
+            </div>
+            <div className="data-container">
+              <Calendar onChange={setDatePicker} value={datePicker} />
+              <div className="info-container">
+                <div className="chart-container">
+                  {/* <div className="box-container pie-container">
+                    <Pie
+                      data={{
+                        labels: ["Canceled", "Waiting Payment", "Paid"],
+                        datasets: [
+                          {
+                            data: [30, 20, 50],
+                            backgroundColor: [
+                              "rgb(255, 99, 132)",
+                              "rgb(255, 205, 86)",
+                              "#A3E4D7",
+                            ],
+                            hoverOffset: 4,
+                            weight: 1,
+                          },
                         ],
-                        hoverOffset: 4,
-                        weight: 1,
-                      },
-                    ],
-                  }}
-                />
-                <div className="title-category">Child Type</div>
+                      }}
+                    />
+                    <div className="title-category"> Payment</div>
+                  </div> */}
+                  <div className="box-container">
+                    <Doughnut
+                      data={{
+                        labels: [
+                          `${datePicker.getDate()}/${
+                            datePicker.getMonth() + 1
+                          }/${datePicker.getFullYear()}`,
+                          "total",
+                        ],
+                        datasets: [
+                          {
+                            data: [
+                              filteredByToday.length,
+                              appointments.length - filteredByToday.length,
+                            ],
+                            backgroundColor: ["#48C9B0", "#D71C60"],
+                            hoverOffset: 4,
+                            weight: 1,
+                          },
+                        ],
+                      }}
+                    />
+                    <div className="title-category">
+                      {`${datePicker.getDate()}-${
+                        datePicker.getMonth() + 1
+                      }-${datePicker.getFullYear()}`}
+                      / Total Appointment
+                    </div>
+                  </div>
+                  <div className="box-container">
+                    <Doughnut
+                      data={{
+                        labels: ["Infant", "Toddler"],
+                        datasets: [
+                          {
+                            data: [
+                              filterByChildType.infant,
+                              filterByChildType.toddler,
+                            ],
+                            backgroundColor: [
+                              "rgb(255, 99, 132)",
+                              "rgb(255, 205, 86)",
+                            ],
+                            hoverOffset: 4,
+                            weight: 1,
+                          },
+                        ],
+                      }}
+                    />
+                    <div className="title-category">Child Type</div>
+                  </div>
+                </div>
               </div>
-              <div className="box-container pie-container">
-                <Pie
-                  data={{
-                    labels: ["Canceled", "Waiting Payment", "Paid"],
-                    datasets: [
-                      {
-                        data: [30, 20, 50],
-                        backgroundColor: [
-                          "rgb(255, 99, 132)",
-                          "rgb(255, 205, 86)",
-                          "#A3E4D7",
-                        ],
-                        hoverOffset: 4,
-                        weight: 1,
-                      },
-                    ],
-                  }}
-                />
-                <div className="title-category"> Payment</div>
+            </div>
+            <div className="box-container bar-chart">
+              <BarChart month={month} data={filterByMonth} />
+            </div>
+            <div className="chart-container__bottom">
+              <div className="box-container customer-box">
+                <div className="member-number">{presenceList.length}</div>
+                <div className="title-category text-member">
+                  Total Present List
+                </div>
               </div>
-              <div className="box-container">
-                <Doughnut
-                  data={{
-                    labels: [
-                      datePicker.toISOString().substring(0, 10),
-                      "total",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          filteredResult.filteredByToday.length,
-                          dummyAppointment.length,
-                        ],
-                        backgroundColor: ["#48C9B0", "#D71C60"],
-                        hoverOffset: 4,
-                        weight: 1,
-                      },
-                    ],
-                  }}
-                />
-                <div className="title-category">Today/ Total Appointment</div>
+              <div className="box-container customer-box">
+                <div className="member-number">{customers.length}</div>
+                <div className="title-category text-member">
+                  Total Customers
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="box-container bar-chart">
-          <BarChart month={month} data={filteredResult.filterByMonth} />
-        </div>
-        <div className="chart-container__bottom">
-          <div className="box-container customer-box">
-            <div className="member-number">{customers.length}</div>
-            <div className="title-category text-member">
-              Total Present List Today
-            </div>
-          </div>
-          <div className="box-container customer-box">
-            <div className="member-number">{customers.length}</div>
-            <div className="title-category text-member">Total Customers</div>
-          </div>
-        </div>
-      </div>
+        )}
+      </>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 const Card = ({ user }) => {
   const {
     id,

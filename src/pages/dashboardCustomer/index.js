@@ -117,11 +117,9 @@ const DashboardCustomer = () => {
               <div className="feature-container__text">
                 <div className="feature-container__title">Easy Booking</div>
                 <div className="feature-container__info">
-                  lorem ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen boo
+                  By using this smart daycare web, you can make an appoinment
+                  easily, just by registering your child name and choose
+                  category, your appointment will be created.
                 </div>
               </div>
               <div className="feature-container__img">
@@ -134,11 +132,8 @@ const DashboardCustomer = () => {
                   QR Code Technology
                 </div>
                 <div className="feature-container__info">
-                  lorem ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen boo
+                  After you create an appointment, you will get a QR code for
+                  accessing the remote camera. QR code will send to your email.
                 </div>
               </div>
               <div className="feature-container__img">
@@ -148,14 +143,12 @@ const DashboardCustomer = () => {
             <div className="feature-container__3">
               <div className="feature-container__text">
                 <div className="feature-container__title">
-                  CCTV Online Technology
+                  Remote Camera Technology
                 </div>
                 <div className="feature-container__info">
-                  lorem ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen boo
+                  Smart Daycare that offers an easy to watches the kids
+                  activities . Being able to stay in contact with kids is a
+                  valuable tool that you needed.
                 </div>
               </div>
               <div className="feature-container__img">
@@ -166,11 +159,9 @@ const DashboardCustomer = () => {
               <div className="feature-container__text">
                 <div className="feature-container__title">Easy Payment</div>
                 <div className="feature-container__info">
-                  lorem ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen boo
+                  Our payment method that can help parents pay for daycare
+                  services . it will make it easier for you and the parents of
+                  the kids you look after.
                 </div>
               </div>
               <div className="feature-container__img">
@@ -192,15 +183,15 @@ const DashboardCustomer = () => {
                 <div className="label">For Infant:</div>
 
                 <div className="price-item__container">
-                  <div className="price">$50</div>
+                  <div className="price">Rp 200 m</div>
                   <div className="price-label">/Day</div>
                 </div>
                 <div className="price-item__container">
-                  <div className="price">$280</div>
+                  <div className="price">Rp 1,3 m</div>
                   <div className="price-label">/Week</div>
                 </div>
                 <div className="price-item__container">
-                  <div className="price">$1500</div>
+                  <div className="price">Rp 6 m</div>
                   <div className="price-label">/Month</div>
                 </div>
               </div>
@@ -208,15 +199,15 @@ const DashboardCustomer = () => {
                 <div className="label">For Toddler:</div>
 
                 <div className="price-item__container">
-                  <div className="price">$60</div>
+                  <div className="price">Rp 250 m</div>
                   <div className="price-label">/Day</div>
                 </div>
                 <div className="price-item__container">
-                  <div className="price">$290</div>
+                  <div className="price">Rp 1,5 m</div>
                   <div className="price-label">/Week</div>
                 </div>
                 <div className="price-item__container">
-                  <div className="price">$1800</div>
+                  <div className="price">Rp 6,3 m</div>
                   <div className="price-label">/Month</div>
                 </div>
               </div>
