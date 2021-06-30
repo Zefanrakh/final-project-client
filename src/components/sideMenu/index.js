@@ -22,13 +22,12 @@ const SideMenu = () => {
     return <></>;
   }
 
-  const role = user.role;
-
+  // const role = user.role;
   return (
     <div className="side-menu">
       <div className="logo">D-CARE</div>
 
-      {role === "customer" && (
+      {user && user.role === "customer" && (
         <div
           className={`menu-container ${pathname === "/dashboard" && "active"}`}
           onClick={() => changePageHandler("/dashboard")}
@@ -42,7 +41,7 @@ const SideMenu = () => {
         </div>
       )}
 
-      {role === "admin" && (
+      {user && user.role === "admin" && (
         <>
           <div
             className={`menu-container ${pathname === "/" && "active"}`}
@@ -81,7 +80,7 @@ const SideMenu = () => {
           </div>
         </>
       )}
-      {role === "customer" && (
+      {user && user.role === "customer" && (
         <div
           className={`menu-container ${pathname === "/history" && "active"}`}
           onClick={() => changePageHandler("/history")}
