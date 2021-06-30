@@ -45,7 +45,6 @@ const Header = () => {
         <img
           alt="profile"
           src={user.profilePicture}
-          // src="https://static.remove.bg/remove-bg-web/8be32deab801c5299982a503e82b025fee233bd0/assets/start_remove-79a4598a05a77ca999df1dcb434160994b6fde2c3e9101984fb1be0f16d0a74e.png"
         />
         {user.username}
       </div>

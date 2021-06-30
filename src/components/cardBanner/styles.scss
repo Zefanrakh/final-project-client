@@ -1,0 +1,30 @@
+.card-banner-container {
+  width: 500px;
+  height: 130px;
+  border: 16px;
+  background: #ffa001;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  .title {
+    font-size: 24px;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    margin-bottom: 8px;
+  }
+
+  .sub-title {
+    color: white;
+    font-size: 12px;
+  }
+  img {
+    width: 120px;
+    position: absolute;
+    right: -12px;
+  }
+}
