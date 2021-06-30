@@ -10,9 +10,9 @@ const Card = ({ user }) => {
       <div className="text-header">{address}</div>
       <div className="text-header">{email}</div>
       <div className="text-header">{phoneNumber}</div>
-      <div onClick={() => dispatch(deleteCustomer(id))}>
+      {/* <div onClick={() => dispatch(deleteCustomer(id))}>
         <i class="fas fa-trash-alt icon-delete"></i>
-      </div>
+      </div> */}
     </div>
   );
 };

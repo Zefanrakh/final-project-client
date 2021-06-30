@@ -53,7 +53,7 @@ const Appointment = () => {
   const [isPayment, setIsPayment] = useState(false);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [isloading, setIsloading] = useState(false);
+  const [isloading, setIsloading] = useState(true);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -65,6 +65,20 @@ const Appointment = () => {
     (state) => state.fetchAppointmentReducer.appointments
   );
   const user = useSelector(({ userReducer }) => userReducer.user);
+
+  useEffect(async () => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+    if (user) {
+      if (user.role === "admin") {
+        await dispatch(fetchAppointment());
+      } else {
+        await dispatch(fetchAppointmentByCustomer(user.Customer.id));
+      }
+    }
+  }, [user]);
+
   useEffect(() => {
     if (search) {
       const parsed = queryString.parse(search);
@@ -76,23 +90,7 @@ const Appointment = () => {
     }
   }, [search]);
 
-  useEffect(() => {
-    if (!localStorage.access_token) {
-      history.push("/login");
-    }
-    console.log(user);
-    if (user) {
-      if (user.role === "admin") {
-        dispatch(fetchAppointment());
-      } else {
-        dispatch(fetchAppointmentByCustomer(user.Customer.id));
-      }
-    }
-  }, []);
-
-  if (!data) {
-    return <p>Loading..</p>;
-  }
+  console.log(data, "<<<<");
 
   return (
     <div className="appointment-container">

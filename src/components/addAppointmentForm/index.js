@@ -182,7 +182,6 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const getDailyQty = () => {
     const formatedStartDate = new Date(startDate);
     const formatedEndDate = new Date(endDate);
-    console.log(formatedStartDate, formatedEndDate);
     const dateDiff =
       (formatedEndDate.getTime() - formatedStartDate.getTime()) /
         (1000 * 3600 * 24) +
