@@ -19,7 +19,6 @@ function App() {
         },
       })
         .then((res) => {
-          console.log(res, 'masuk====>');
           dispatch(setUserAction(res.data.user));
         })
         .catch((err) => {
