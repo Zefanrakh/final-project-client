@@ -17,9 +17,9 @@ const SideMenu = () => {
     history.push("/login");
   };
 
-  // if (!user) {
-  //   return history.push('/login')
-  // }
+  if (!user) {
+    return <></>;
+  }
 
   const role = user.role;
   return (

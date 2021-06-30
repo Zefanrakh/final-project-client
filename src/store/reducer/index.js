@@ -5,8 +5,6 @@ import fetchAppointmentReducer from "./fetchAppointmentReducer";
 import fetchCustomerReducer from "./fetchCustomerReducer";
 import fetchPresenceReducer from "./fetchPresenceReducer";
 import searchResultReducer from "./searchResultReducer";
-import priceReducer from './priceReducer'
-import paymentReducer from './paymentReducer'
 
 export default combineReducers({
   dummyReducer,
@@ -15,6 +13,4 @@ export default combineReducers({
   fetchPresenceReducer,
   userReducer,
   searchResultReducer,
-  priceReducer,
-  paymentReducer
 });

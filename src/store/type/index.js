@@ -4,6 +4,3 @@ export const FETCH_CUSTOMER = "FETCH_CUSTOMER";
 export const FETCH_PRESENCE = "FETCH_PRESENCE";
 export const SET_USER = "SET_USER";
 export const FETCH_SEARCH_RESULT = "FETCH_SEARCH_RESULT";
-export const SET_ERROR = 'SET_ERROR'
-export const SET_LOADING = 'SET_LOADING'
-export const SET_PRICELIST = 'SET_PRICELIST'
