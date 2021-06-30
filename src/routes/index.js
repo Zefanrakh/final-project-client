@@ -9,11 +9,16 @@ import PresenceList from "../pages/presenceList";
 import Monitoring from "../pages/monitoring";
 import Viewer from "../pages/viewer";
 import NotFound from "../pages/notfound";
+import DashboardCustomer from "../pages/dashboardCustomer";
 
 const routes = [
   {
     component: () => <Dashboard />,
     path: "/",
+  },
+  {
+    component: () => <DashboardCustomer />,
+    path: "/dashboard",
   },
   {
     component: () => <Viewer />,
