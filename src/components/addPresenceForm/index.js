@@ -170,8 +170,7 @@ const AddMemberForm = ({ openPopUpHandler }) => {
             </form>
           </>
         ) : (
-          <>
-            <div className="title">Qr-Code</div>
+          <div className="qr-code__container">
             <i
               className="fas fa-times icon-close"
               onClick={openPopUpHandler}
@@ -179,12 +178,11 @@ const AddMemberForm = ({ openPopUpHandler }) => {
             <div id="print-area">
               <QRCode value={linkAkses} />
             </div>
-            <input
-              type="button"
-              onClick={() => printDiv("print-area")}
-              value="print"
-            />
-          </>
+
+            <div onClick={() => printDiv("print-area")}>
+              <i className="fas fa-print print-button"></i>
+            </div>
+          </div>
         )}
       </div>
     </div>
