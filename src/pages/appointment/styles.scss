@@ -36,7 +36,7 @@
     }
   }
 
-   .main-container::-webkit-scrollbar {
+  .main-container::-webkit-scrollbar {
     display: none;
   }
 
@@ -44,6 +44,8 @@
     width: 92%;
     position: relative;
     padding: 16px 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     .button-container {
       position: absolute;

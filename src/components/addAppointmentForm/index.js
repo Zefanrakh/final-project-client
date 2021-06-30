@@ -160,7 +160,6 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const getDailyQty = () => {
     const formatedStartDate = new Date(startDate);
     const formatedEndDate = new Date(endDate);
-    console.log(formatedStartDate, formatedEndDate);
     const dateDiff =
       (formatedEndDate.getTime() - formatedStartDate.getTime()) /
         (1000 * 3600 * 24) +
@@ -169,14 +168,14 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   };
 
   const getEndDate = () => {
-    if (selectedPackage === "weekly") {
+    if (selectedPackage === "Weekly") {
       const formatedStartDate = new Date(startDate);
       const newEndDate = formatedStartDate
         .addDays(7 * packageQty - 1)
         .toISOString()
         .substring(0, 10);
       return newEndDate;
-    } else if (selectedPackage === "monthly") {
+    } else if (selectedPackage === "Monthly") {
       const formatedStartDate = new Date(startDate);
       const newEndDate = formatedStartDate
         .addDays(30 * packageQty - 1)
@@ -207,9 +206,9 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 </div>
                 <div
                   className={`category-text ${
-                    selectedCategory === "infant" && "active"
+                    selectedCategory === "Infant" && "active"
                   }`}
-                  onClick={() => setSelectedCategory("infant")}
+                  onClick={() => setSelectedCategory("Infant")}
                 >
                   Infant
                 </div>
@@ -226,17 +225,17 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 </div>
                 <div
                   className={`category-text ${
-                    selectedPackage === "weekly" && "active"
+                    selectedPackage === "Weekly" && "active"
                   }`}
-                  onClick={() => setSelectedPackage("weekly")}
+                  onClick={() => setSelectedPackage("Weekly")}
                 >
                   Weekly
                 </div>
                 <div
                   className={`category-text ${
-                    selectedPackage === "monthly" && "active"
+                    selectedPackage === "Monthly" && "active"
                   }`}
-                  onClick={() => setSelectedPackage("monthly")}
+                  onClick={() => setSelectedPackage("Monthly")}
                 >
                   Monthly
                 </div>
@@ -264,7 +263,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
               {selectedPackage !== "Daily" && (
                 <>
                   <label>
-                    How many {selectedPackage === "monthly" ? "Month" : "Week"}
+                    How many {selectedPackage === "Monthly" ? "Month" : "Week"}
                   </label>
                   <input
                     type="number"

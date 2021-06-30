@@ -36,14 +36,14 @@ const cardData = [
   {
     title: "Experienced Nannies",
     style: 4,
-    subTitle: "Just Scan and Watch Your Kids",
+    subTitle: "Our nannies experienced more than 9 years",
     image:
       "http://res.cloudinary.com/dfh39qfib/image/upload/v1625012905/b403mizdxymahmk6rupz.png",
   },
   {
     title: "Easy Payment",
     style: 5,
-    subTitle: "Just Scan and Watch Your Kids",
+    subTitle: "pay using virtual account ",
     image:
       "http://res.cloudinary.com/dfh39qfib/image/upload/v1625008926/hedltz17u63xolnillhv.png",
   },
