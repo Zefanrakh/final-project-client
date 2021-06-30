@@ -7,19 +7,20 @@
   overflow: hidden;
   box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
 
-  .dashboard-container ::-webkit-scrollbar {
-    display: none;
-  }
-
   .pie-container {
     width: 200px !important;
+  }
+
+  .main-container::-webkit-scrollbar {
+    display: none;
   }
 
   .main-container {
     width: 92%;
     padding: 8px 16px 8px 32px;
     background: white;
-    overflow: scroll;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
     height: 85vh;
   }
 
