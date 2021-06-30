@@ -1,13 +1,140 @@
 .dashboard-container {
   width: 1200px;
   height: 90vh;
-  background: #f5f6fb;
+  background: white;
   border-radius: 12px;
   display: flex;
   overflow: hidden;
   box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
 
+  .dashboard-container ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pie-container {
+    width: 200px !important;
+  }
+
   .main-container {
-    width: 80%;
+    width: 92%;
+    padding: 8px 16px 8px 32px;
+    background: white;
+    overflow: scroll;
+    height: 85vh;
+  }
+
+  .banner-container {
+    margin: 16px 0 32px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-container,
+  .chart-container__bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-container__bottom {
+    justify-content: space-around;
+    margin-top: 72px;
+  }
+
+  .info-container {
+    flex: 1;
+    box-sizing: border-box;
+  }
+  .data-container {
+    display: flex;
+    justify-content: space-between;
+
+    .box-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 180px;
+      text-align: center;
+      padding: 0 16px;
+    }
+  }
+
+  .bar-chart {
+    margin-top: 64px;
+  }
+
+  .title-category {
+    font-size: 16px;
+    margin-top: 16px;
+    text-align: center;
+    color: grey;
+  }
+
+  .member-number {
+    font-size: 80px;
+    color: grey;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .text-member {
+    font-size: 24px;
+  }
+
+  .customer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .react-calendar {
+    background: #303557;
+    border: none;
+    border-radius: 16px;
+    padding: 8px;
+    height: max-content;
+    margin-right: 48px;
+
+    .react-calendar__navigation__label__labelText {
+      font-size: 20px;
+      color: white;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .react-calendar__navigation__arrow {
+      font-size: 30px;
+      color: white;
+    }
+
+    .react-calendar__month-view__weekdays__weekday {
+      color: white;
+
+      abbr {
+        text-decoration: none;
+      }
+    }
+
+    .react-calendar__month-view__days__day {
+      font-size: 11px;
+      color: white;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .react-calendar__tile--active {
+      background: #48c9b0 !important;
+      border-radius: 16px;
+    }
+
+    .react-calendar__tile--now {
+      background: #17a589;
+      border-radius: 16px;
+    }
+
+    .react-calendar__year-view__months__month,
+    .react-calendar__decade-view__years__year,
+    .react-calendar__century-view__decades__decade {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
   }
 }
