@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.5",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -22,8 +23,10 @@
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-scroll-hooks": "^0.1.1",
     "react-slick": "^0.28.1",
     "react-three-fiber": "^5.1.5",
+    "react-to-pdf": "0.0.14",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "sass": "^1.35.1",
