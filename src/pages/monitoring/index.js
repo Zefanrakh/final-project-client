@@ -10,18 +10,14 @@ const Monitoring = () => {
   const peerConnections = {};
   const [openVideo, setOpenVideo] = useState(false);
   const history = useHistory();
-  console.log(`-${params.cameraId}`);
   const connectionHandler = async () => {
     socketRef.current = await io.connect(baseUrl);
 
-    socketRef.current.on(
-      "answer" + `-${params.cameraId}`,
-      (id, description) => {
-        peerConnections[id].setRemoteDescription(description);
-      }
-    );
+    socketRef.current.on("answer", (id, description) => {
+      peerConnections[id].setRemoteDescription(description);
+    });
 
-    socketRef.current.on("watcher" + `-${params.cameraId}`, (id) => {
+    socketRef.current.on("watcher", (id) => {
       const peerConnection = new RTCPeerConnection(config);
       peerConnections[id] = peerConnection;
 
@@ -32,11 +28,7 @@ const Monitoring = () => {
 
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
-          socketRef.current.emit(
-            "candidate" + `-${params.cameraId}`,
-            id,
-            event.candidate
-          );
+          socketRef.current.emit("candidate", id, event.candidate);
         }
       };
 
@@ -44,23 +36,16 @@ const Monitoring = () => {
         .createOffer()
         .then((sdp) => peerConnection.setLocalDescription(sdp))
         .then(() => {
-          socketRef.current.emit(
-            "offer" + `-${params.cameraId}`,
-            id,
-            peerConnection.localDescription
-          );
+          socketRef.current.emit("offer", id, peerConnection.localDescription);
         });
     });
 
-    socketRef.current.on(
-      "candidate" + `-${params.cameraId}`,
-      (id, candidate) => {
-        peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-      }
-    );
+    socketRef.current.on("candidate", (id, candidate) => {
+      peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+    });
     console.log(peerConnections);
 
-    socketRef.current.on("disconnectPeer" + `-${params.cameraId}`, (id) => {
+    socketRef.current.on("disconnectPeer", (id) => {
       peerConnections[id].close();
       delete peerConnections[id];
     });
@@ -116,7 +101,7 @@ const Monitoring = () => {
         (option) => option.text === stream.getVideoTracks()[0].label
       );
       videoElement.srcObject = stream;
-      socketRef.current.emit("broadcaster" + `-${params.cameraId}`);
+      socketRef.current.emit("broadcaster");
     }
 
     function handleError(error) {

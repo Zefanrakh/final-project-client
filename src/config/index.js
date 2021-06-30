@@ -7,25 +7,25 @@ export const config = {
     {
       url: "turn:global.turn.twilio.com:3478?transport=udp",
       username:
-        "29fcd817f8ac550079551fb8905ac445921872fa227fff3d961780eecd781c54",
+        "bf5911f121110cf5e6d0096769206b118f8249af0ffad2e1f753232f9d40b73b",
       urls: "turn:global.turn.twilio.com:3478?transport=udp",
-      credential: "qay/JufD6AmzmgBpYd09q4EE1Es464ewPmBO72zHzpg=",
+      credential: "6CWrnOKYbwIJKgefUN9BuBvY6EyZrjKnNn9T32kplZE=",
     },
     {
       url: "turn:global.turn.twilio.com:3478?transport=tcp",
       username:
-        "29fcd817f8ac550079551fb8905ac445921872fa227fff3d961780eecd781c54",
+        "bf5911f121110cf5e6d0096769206b118f8249af0ffad2e1f753232f9d40b73b",
       urls: "turn:global.turn.twilio.com:3478?transport=tcp",
-      credential: "qay/JufD6AmzmgBpYd09q4EE1Es464ewPmBO72zHzpg=",
+      credential: "6CWrnOKYbwIJKgefUN9BuBvY6EyZrjKnNn9T32kplZE=",
     },
     {
       url: "turn:global.turn.twilio.com:443?transport=tcp",
       username:
-        "29fcd817f8ac550079551fb8905ac445921872fa227fff3d961780eecd781c54",
+        "bf5911f121110cf5e6d0096769206b118f8249af0ffad2e1f753232f9d40b73b",
       urls: "turn:global.turn.twilio.com:443?transport=tcp",
-      credential: "qay/JufD6AmzmgBpYd09q4EE1Es464ewPmBO72zHzpg=",
+      credential: "6CWrnOKYbwIJKgefUN9BuBvY6EyZrjKnNn9T32kplZE=",
     },
   ],
 };
 
-export const baseUrl = "https://coba-cctv.herokuapp.com/";
+export const baseUrl = "http://localhost:3001/";
