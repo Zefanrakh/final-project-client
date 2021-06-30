@@ -76,7 +76,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     await dispatch(fetchPriceList());
   }, []);
 
-  if (!data) {
+  if (!data || !priceList) {
     return <p>Loading..</p>;
   }
   /// display price from the price find in pricelist
@@ -96,6 +96,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   };
   const saveAppointment = async (e) => {
     e.preventDefault();
+
     setQuantity(Number(packageQty));
     let endDateValue = endDate;
     if (selectedPackage === "Daily") {
@@ -125,7 +126,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     };
 
     //fetch price from price table, amount ==== price  <<<<<<<<<<<<<
-    console.log(selectedCustomer,'===>');
+    
     const invoicePayload = {
       amount: price.price * quantity,
       email: 'dudebahrulhayat@gmail.com',
@@ -234,7 +235,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 >
                   Infant
                 </div>
-                Total price: {price.price * quantity}
+                {price && (<>Total price: {price.price * quantity}</>) }
               </div>
               <label>Choose Package</label>
               <div className="category-container">

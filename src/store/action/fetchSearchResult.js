@@ -5,7 +5,7 @@ const fetchSearchResult = (searchType, keyword, isEmpty) => async (
   dispatch
 ) => {
   const response = await axios(
-    `http://localhost:3001/search?searchType=${searchType}&keyword=${keyword}`,
+    `http://34.200.246.160:3001/search?searchType=${searchType}&keyword=${keyword}`,
     {
       method: "GET",
       headers: {

@@ -64,7 +64,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios("http://localhost:3001" + "/user/login", {
+    axios("http://34.200.246.160:3001" + "/user/login", {
       method: "POST",
       data: {
         username,

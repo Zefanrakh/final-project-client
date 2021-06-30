@@ -4,7 +4,7 @@ import { FETCH_APPOINTMENT } from "../type";
 export const addAppointment = (payload) => (dispatch) => {
 
         return axios({
-            url: 'http://localhost:3001/appointment',
+            url: 'http://34.200.246.160:3001/appointment',
             method: 'POST',
             headers: {access_token: localStorage.getItem("access_token")},
             data: payload
@@ -14,7 +14,7 @@ export const addAppointment = (payload) => (dispatch) => {
 
 export const fetchAppointment = () => (dispatch) => {
         axios({
-            url: 'http://localhost:3001/appointment',
+            url: 'http://34.200.246.160:3001/appointment',
             method: 'GET',
             headers: {access_token: localStorage.getItem("access_token")}
         })
@@ -32,7 +32,7 @@ export const fetchAppointment = () => (dispatch) => {
 export const fetchAppointmentByCustomer = (id) => (dispatch) => {
     console.log('masuk action');
     axios({
-        url: 'http://localhost:3001/appointment/customer/'+id,
+        url: 'http://34.200.246.160:3001/appointment/customer/'+id,
         method: 'GET',
         headers: {access_token: localStorage.getItem("access_token")}
     })

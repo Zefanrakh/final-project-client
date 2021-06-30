@@ -4,7 +4,7 @@ import axios from "axios";
 export const addCustomer = (payload) => (dispatch) => {
 
         return axios({
-            url: 'http://localhost:3001/customers',
+            url: 'http://34.200.246.160:3001/customers',
             method: 'POST',
             headers: {access_token: localStorage.getItem("access_token")},
             data: payload
@@ -14,7 +14,7 @@ export const addCustomer = (payload) => (dispatch) => {
 export const fetchCustomer = () => (dispatch) => {
 
         return axios({
-            url: 'http://localhost:3001/customers',
+            url: 'http://34.200.246.160:3001/customers',
             method: 'GET',
             headers: {access_token: localStorage.getItem("access_token")}
         })
@@ -32,7 +32,7 @@ export const fetchCustomer = () => (dispatch) => {
 export function deleteCustomer(payload){
     const id = payload
     return(dispatch)=>{
-        fetch(`http://localhost:3001/customers/${id}`,{
+        fetch(`http://34.200.246.160:3001/customers/${id}`,{
             method:'Delete',
             headers:{access_token: localStorage.getItem("access_token"),
                 'Content-Type' : 'application/json',

@@ -4,7 +4,7 @@ import { FETCH_PRESENCE } from "../type";
 const fetchPresenceAction = () => (dispatch) => {
 
         return axios({
-            url: 'http://localhost:3001/presence',
+            url: 'http://34.200.246.160:3001/presence',
             method: 'GET',
             headers: {access_token: localStorage.getItem("access_token")}
         })

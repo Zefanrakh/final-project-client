@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const access_token = localStorage.access_token;
     if (access_token) {
-      axios("http://localhost:3001" + "/user/getdata", {
+      axios("http://34.200.246.160:3001" + "/user/getdata", {
         method: "POST",
         headers: {
           access_token,

@@ -8,7 +8,7 @@ export const createInvoice = (payload) => async (dispatch) => {
   console.log(payload,'di action===>');
   try {
     const newInvoice = await axios({
-      url: 'http://localhost:3001/checkout/invoice',
+      url: 'http://34.200.246.160:3001/checkout/invoice',
       method: 'POST',
       data: payload,
       headers: {
@@ -24,7 +24,7 @@ export const createInvoice = (payload) => async (dispatch) => {
 export const createPaymentDetail = (payload) => async (dispatch) => {
   try {
     const paymentDetail = await axios({
-      url: 'http://localhost:3001/paymentDetails',
+      url: 'http://34.200.246.160:3001/paymentDetails',
       method: 'POST',
       data: payload,
       headers: {

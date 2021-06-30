@@ -28,4 +28,4 @@ export const config = {
   ],
 };
 
-export const baseUrl = "http://localhost:3001/";
+export const baseUrl = "http://34.200.246.160:3001/";
