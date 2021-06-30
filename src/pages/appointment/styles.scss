@@ -7,9 +7,39 @@
   overflow: hidden;
   box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
 
+  .banner-container {
+    margin-top: 16px;
+    .card-banner-container {
+      background: #009688;
+      img {
+        bottom: -14px;
+        position: absolute;
+        right: 12px;
+        width: 143px;
+      }
+    }
+  }
+
+  .info-container {
+    display: flex;
+    justify-content: space-between;
+
+    .info-total {
+      font-size: 70px;
+      color: #f15c60;
+      padding: 0 64px;
+      text-align: center;
+
+      .text {
+        font-size: 18px;
+      }
+    }
+  }
+
   .main-container {
     width: 92%;
     position: relative;
+    padding: 16px 20px;
 
     .button-container {
       position: absolute;

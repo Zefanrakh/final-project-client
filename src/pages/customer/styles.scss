@@ -8,6 +8,10 @@
   position: relative;
   box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
 
+  .card-banner-container {
+    margin-top: 16px;
+  }
+
   .button-container {
     position: absolute;
     bottom: 16px;
@@ -28,5 +32,22 @@
 
   .main-container {
     width: 92%;
+    padding: 16px 20px;
+
+    .info-container {
+      display: flex;
+      justify-content: space-between;
+
+      .info-total {
+        font-size: 70px;
+        color: #f15c60;
+        padding: 0 64px;
+        text-align: center;
+
+        .text {
+          font-size: 18px;
+        }
+      }
+    }
   }
 }

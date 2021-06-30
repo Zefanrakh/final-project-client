@@ -189,6 +189,8 @@ const DashboardCustomer = () => {
             <div className="pricing-body" ref={pricingRef}>
               <div className="title-section">Pricing</div>
               <div className="pricing-content">
+                <div className="label">For Infant:</div>
+
                 <div className="price-item__container">
                   <div className="price">$50</div>
                   <div className="price-label">/Day</div>
@@ -199,6 +201,22 @@ const DashboardCustomer = () => {
                 </div>
                 <div className="price-item__container">
                   <div className="price">$1500</div>
+                  <div className="price-label">/Month</div>
+                </div>
+              </div>
+              <div className="pricing-content">
+                <div className="label">For Toddler:</div>
+
+                <div className="price-item__container">
+                  <div className="price">$60</div>
+                  <div className="price-label">/Day</div>
+                </div>
+                <div className="price-item__container">
+                  <div className="price">$290</div>
+                  <div className="price-label">/Week</div>
+                </div>
+                <div className="price-item__container">
+                  <div className="price">$1800</div>
                   <div className="price-label">/Month</div>
                 </div>
               </div>
