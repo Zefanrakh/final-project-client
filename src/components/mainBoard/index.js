@@ -12,13 +12,8 @@ const MainBoard = ({
   data,
   isMemberPage,
   isPresenceListPage,
+  isLoading,
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
   return (
     <div className="main-board">
       <div className="header__main-board">
@@ -33,6 +28,7 @@ const MainBoard = ({
           );
         })}
       </div>
+
       {isLoading && (
         <SkeletonTheme color="white" highlightColor="#efefef">
           <p>
@@ -42,6 +38,7 @@ const MainBoard = ({
       )}
 
       {!isLoading &&
+        data &&
         data.map((user, idx) => {
           return isMemberPage ? (
             <CardMember key={idx} user={user} />
