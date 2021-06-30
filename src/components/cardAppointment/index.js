@@ -1,6 +1,6 @@
 import "./styles.scss";
 import { useHistory } from "react-router-dom";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 const Card = ({ user, isAppointment }) => {
   const {
     id,
@@ -12,17 +12,18 @@ const Card = ({ user, isAppointment }) => {
     status,
     type,
   } = user;
+  
   const role = localStorage.getItem("role");
 
   const history = useHistory();
 
   const paymentHandler = () => {
-    const encodePayload = jwt.sign(
-      { childName, startDate, endDate, notes, childAge, type },
-      "privateKey"
-    );
+    // const encodePayload = jwt.sign(
+    //   { childName, startDate, endDate, notes, childAge, type },
+    //   "privateKey"
+    // );
 
-    history.push(`/appointment?payment=${encodePayload}`);
+    // history.push(`/appointment?payment=${encodePayload}`);
   };
   return (
     <div className="card-container">

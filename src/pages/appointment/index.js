@@ -9,7 +9,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import Payment from "../../components/payment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAppointment } from "../../store/action";
+import { fetchAppointment, fetchAppointmentByCustomer } from "../../store/action";
 
 const listHeader = [
   "Id",
@@ -56,11 +56,11 @@ const Appointment = () => {
   const result = useSelector(
     ({ searchResultReducer }) => searchResultReducer.result
   );
-
   const dispatch = useDispatch();
   const data = useSelector(
     state => state.fetchAppointmentReducer.appointments
   );
+  const user = useSelector(({ userReducer }) => userReducer.user);
   useEffect(() => {
     if (search) {
       const parsed = queryString.parse(search);
@@ -76,12 +76,14 @@ const Appointment = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    setIsloading(true);
-    dispatch(fetchAppointment());
-    setIsloading(false);
+    if(user.role === 'admin'){
+      dispatch(fetchAppointment());
+    }else{
+      dispatch(fetchAppointmentByCustomer(user.CustomerId));
+    }
   }, []);
 
-  if (isloading) {
+  if (!data) {
     return <p>Loading..</p>;
   }
 
@@ -103,7 +105,7 @@ const Appointment = () => {
             <MainBoard
               isAppointment={true}
               listHeader={listHeader}
-              data={result.length === 0 ? dummyData : result}
+              data={result.length === 0 ? data : result}
             />
             <FloatingButton onClick={openPopUpHandler}>
               <i class="fas fa-plus"></i>

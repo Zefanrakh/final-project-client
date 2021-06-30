@@ -17,14 +17,28 @@ const SideMenu = () => {
     history.push("/login");
   };
 
-  if (!user) {
-    return <></>;
-  }
+  // if (!user) {
+  //   return history.push('/login')
+  // }
 
   const role = user.role;
   return (
     <div className="side-menu">
-      <div className="logo">logo here</div>
+      <div className="logo">D-CARE</div>
+
+      {role === "customer" && (
+        <div
+          className={`menu-container ${pathname === "/dashboard" && "active"}`}
+          onClick={() => changePageHandler("/dashboard")}
+        >
+          {pathname === "/dashboard" && (
+            <div className="fluid-active">
+              <i className="fas fa-home icon-active"></i>
+            </div>
+          )}
+          <i className="fas fa-home icon"></i>
+        </div>
+      )}
 
       {role === "admin" && (
         <>
@@ -32,17 +46,23 @@ const SideMenu = () => {
             className={`menu-container ${pathname === "/" && "active"}`}
             onClick={() => changePageHandler("/")}
           >
+            {pathname === "/" && (
+              <div className="fluid-active">
+                <i className="fas fa-home icon-active"></i>
+              </div>
+            )}
             <i className="fas fa-home icon"></i>
-            Dashboard
           </div>
           <div
-            className={`menu-container ${
-              pathname === "/customers" && "active"
-            }`}
+            className="menu-container"
             onClick={() => changePageHandler("/customers")}
           >
+            {pathname === "/customers" && (
+              <div className="fluid-active">
+                <i className="fas fa-user-friends icon-active"></i>
+              </div>
+            )}
             <i className="fas fa-user-friends icon"></i>
-            Customers
           </div>
           <div
             className={`menu-container ${
@@ -50,8 +70,12 @@ const SideMenu = () => {
             }`}
             onClick={() => changePageHandler("/present-list")}
           >
+            {pathname === "/present-list" && (
+              <div className="fluid-active">
+                <i className="fas fa-stream icon-active"></i>
+              </div>
+            )}
             <i className="fas fa-stream icon"></i>
-            Present List
           </div>
         </>
       )}
@@ -60,21 +84,29 @@ const SideMenu = () => {
           className={`menu-container ${pathname === "/history" && "active"}`}
           onClick={() => changePageHandler("/history")}
         >
+          {pathname === "/history" && (
+            <div className="fluid-active">
+              <i className="fas fa-history icon-active"></i>
+            </div>
+          )}
           <i className="fas fa-history icon"></i>
-          History
         </div>
       )}
       <div
-        className={`menu-container ${pathname === "/appointment" && "active"}`}
+        className="menu-container"
         onClick={() => changePageHandler("/appointment")}
       >
+        {pathname === "/appointment" && (
+          <div className="fluid-active">
+            <i className="fas fa-book-open icon-active"></i>
+          </div>
+        )}
+
         <i className="fas fa-book-open icon"></i>
-        Appointment
       </div>
 
       <div onClick={handleLogout} className="menu-container logout-container">
         <i className="fas fa-sign-out icon"></i>
-        Logout
       </div>
     </div>
   );

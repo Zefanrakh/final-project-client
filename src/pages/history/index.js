@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import SideMenu from "../../components/sideMenu";
 import Header from "../../components/header";
 import MainBoard from "../../components/mainBoard";
-import AddAppointmentForm from "../../components/addAppointmentForm";
-import FloatingButton from "../../components/floatingButton";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAppointmentByCustomer } from "../../store/action";
+
 
 const listHeader = [
   "Id",
@@ -40,6 +40,7 @@ const dummyData = [
 ];
 
 const History = () => {
+  const dispatch = useDispatch()
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
@@ -56,12 +57,29 @@ const History = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    dispatch(fetchAppointmentByCustomer(user.CustomerId));
+  },[])
+
+  let appointments = useSelector(
+    state => state.fetchAppointmentReducer.appointments
+  );
+  if(!appointments){
+    return <></>
+  }
+
+  const data = appointments.filter(appointment => {
+    const endAppointment = new Date(appointment.endDate)
+    const now = new Date()
+    return endAppointment < now
+  })
+
   return (
     <div className="appointment-container">
       <SideMenu />
       <div className="main-container">
         <Header />
-        <MainBoard listHeader={listHeader} dummyData={dummyData} />
+        <MainBoard listHeader={listHeader} data={data} />
       </div>
     </div>
   );

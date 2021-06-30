@@ -8,7 +8,6 @@ import { setUserAction } from "./store/action";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(({ userReducer }) => userReducer.user);
 
   useEffect(() => {
     const access_token = localStorage.access_token;
@@ -27,7 +26,7 @@ function App() {
         });
     }
   }, []);
-  console.log(user);
+
   return (
     <div className="App">
       <Router>

@@ -9,7 +9,6 @@ const Card = ({ user }) => {
       <div className="text-header">{pickupperName}</div>
       <div className="text-header green-text">{pickupTime}</div>
       <div className="text-header blue-text">{presenceDate}</div>
-      <div className="text-header"><button>Print Qr-Code</button></div>
     </div>
   );
 };

@@ -10,22 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number", "Action"];
-const dummyData = [
-  {
-    id: "1",
-    name: "kevin",
-    address: "bogor",
-    email: "kevin@gmail.com",
-    phone: "081121313131",
-  },
-  {
-    id: "2",
-    name: "Joni",
-    address: "alor",
-    email: "joni@gmail.com",
-    phone: "424244242",
-  },
-];
 const Customer = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.fetchCustomerReducer.customers);
@@ -35,10 +19,17 @@ const Customer = () => {
   const result = useSelector(
     ({ searchResultReducer }) => searchResultReducer.result
   );
+  const [isLoading, setIsLoading] = useState(true);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
-  useEffect(() => {
+
+  const fetchCustomerHandler = async () => {
+    await dispatch(fetchCustomer());
+    setIsLoading(false);
+  };
+
+  useEffect(async () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
@@ -47,11 +38,8 @@ const Customer = () => {
       history.push("/appointment");
     }
 
-    dispatch(fetchCustomer());
+    fetchCustomerHandler();
   }, [user]);
-  if (!data) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="costumer-container">
@@ -63,6 +51,7 @@ const Customer = () => {
           listHeader={listHeader}
           data={result.length === 0 ? data : result}
           isMemberPage={true}
+          isLoading={isLoading}
         />
         <FloatingButton onClick={openPopUpHandler}>
           <i class="fas fa-plus"></i>
