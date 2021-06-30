@@ -8,8 +8,9 @@ import AddMemberForm from "../../components/addMemberForm";
 import { fetchCustomer } from "../../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import CardBanner from "../../components/cardBanner";
 
-const listHeader = ["Id", "Name", "Address", "Email", "Phone Number", "Action"];
+const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
 const Customer = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.fetchCustomerReducer.customers);
@@ -47,6 +48,17 @@ const Customer = () => {
       <SideMenu />
       <div className="main-container">
         <Header />
+        <div className="info-container">
+          <CardBanner
+            title="List Customer Page"
+            subTitle="add and delete customer here!"
+          />
+          <div className="info-total">
+            {result.length === 0 ? data.length : result.length}
+            <div className="text">Customers</div>
+          </div>
+        </div>
+
         <MainBoard
           listHeader={listHeader}
           data={result.length === 0 ? data : result}

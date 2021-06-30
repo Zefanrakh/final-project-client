@@ -6,7 +6,7 @@ import MainBoard from "../../components/mainBoard";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAppointmentByCustomer } from "../../store/action";
-
+import CardBanner from "../../components/cardBanner";
 
 const listHeader = [
   "Id",
@@ -40,7 +40,7 @@ const dummyData = [
 ];
 
 const History = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
   const user = useSelector(({ userReducer }) => userReducer.user);
@@ -52,33 +52,45 @@ const History = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    if (user && user.role === "admin") {
-      history.push("/");
+    if (user) {
+      if (user.role === "admin") {
+        history.push("/");
+      }
+      dispatch(fetchAppointmentByCustomer(user.CustomerId));
     }
   }, [user]);
 
-  useEffect(() => {
-    dispatch(fetchAppointmentByCustomer(user.CustomerId));
-  },[])
-
   let appointments = useSelector(
-    state => state.fetchAppointmentReducer.appointments
+    (state) => state.fetchAppointmentReducer.appointments
   );
-  if(!appointments){
-    return <></>
+  if (!appointments) {
+    return <></>;
   }
 
-  const data = appointments.filter(appointment => {
-    const endAppointment = new Date(appointment.endDate)
-    const now = new Date()
-    return endAppointment < now
-  })
+  const data = appointments.filter((appointment) => {
+    const endAppointment = new Date(appointment.endDate);
+    const now = new Date();
+    return endAppointment < now;
+  });
 
   return (
-    <div className="appointment-container">
+    <div className="history-container">
       <SideMenu />
       <div className="main-container">
         <Header />
+        <div className="info-container">
+          <div className="banner-container">
+            <CardBanner
+              title="List History"
+              subTitle="see your last appointment here!"
+            />
+          </div>
+          <div className="info-total">
+            {data.length}
+            <div className="text">History</div>
+          </div>
+        </div>
+
         <MainBoard listHeader={listHeader} data={data} />
       </div>
     </div>

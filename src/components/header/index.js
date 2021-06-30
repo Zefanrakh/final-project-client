@@ -41,13 +41,7 @@ const Header = () => {
         />
         <i className="fas fa-search search-icon"></i>
       </div>
-      <div className="profile-container">
-        <img
-          alt="profile"
-          src={user.profilePicture}
-        />
-        {user.username}
-      </div>
+      <div className="profile-container">Hi {user.username}!</div>
     </div>
   );
 };

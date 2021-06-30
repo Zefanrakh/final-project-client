@@ -9,7 +9,11 @@ import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import Payment from "../../components/payment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAppointment, fetchAppointmentByCustomer } from "../../store/action";
+import {
+  fetchAppointment,
+  fetchAppointmentByCustomer,
+} from "../../store/action";
+import CardBanner from "../../components/cardBanner";
 
 const listHeader = [
   "Id",
@@ -58,7 +62,7 @@ const Appointment = () => {
   );
   const dispatch = useDispatch();
   const data = useSelector(
-    state => state.fetchAppointmentReducer.appointments
+    (state) => state.fetchAppointmentReducer.appointments
   );
   const user = useSelector(({ userReducer }) => userReducer.user);
   useEffect(() => {
@@ -76,10 +80,12 @@ const Appointment = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    if(user.role === 'admin'){
-      dispatch(fetchAppointment());
-    }else{
-      dispatch(fetchAppointmentByCustomer(user.CustomerId));
+    if (user) {
+      if (user.role === "admin") {
+        dispatch(fetchAppointment());
+      } else {
+        dispatch(fetchAppointmentByCustomer(user.CustomerId));
+      }
     }
   }, []);
 
@@ -98,6 +104,20 @@ const Appointment = () => {
           />
         )}
         <Header />
+        <div className="info-container">
+          <div className="banner-container">
+            <CardBanner
+              title="List Appointment"
+              subTitle="create and see your appointment "
+              image="http://res.cloudinary.com/dfh39qfib/image/upload/v1624977239/treljlrt2qn6f8f2yrtx.png"
+            />
+          </div>
+          <div className="info-total">
+            {result.length === 0 ? data.length : result.length}
+            <div className="text">Appointments</div>
+          </div>
+        </div>
+
         {isPayment ? (
           <Payment query={queryString.parse(search)} />
         ) : (
