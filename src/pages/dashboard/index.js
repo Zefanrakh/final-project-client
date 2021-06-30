@@ -26,8 +26,11 @@ const Dashboard = () => {
     ({ searchResultReducer }) => searchResultReducer.result
   );
   const data = useSelector(
-     ({ dummyReducer }) => dummyReducer.dummy
-   );
+    (state) => state.fetchAppointmentReducer.appointments
+  );
+  // const getDummyFromRedux = useSelector(
+  //   ({ dummyReducer }) => dummyReducer.dummy
+  // );
 
   useEffect(() => {
     if (!localStorage.access_token) {
