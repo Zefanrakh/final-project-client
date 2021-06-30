@@ -80,11 +80,12 @@ const Appointment = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+    console.log(user);
     if (user) {
       if (user.role === "admin") {
         dispatch(fetchAppointment());
       } else {
-        dispatch(fetchAppointmentByCustomer(user.CustomerId));
+        dispatch(fetchAppointmentByCustomer(user.Customer.id));
       }
     }
   }, []);

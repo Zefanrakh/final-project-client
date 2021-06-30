@@ -2,11 +2,47 @@ import "./styles.scss";
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
+import * as THREE from "three";
+import {
+  Canvas,
+  useFrame,
+  extend,
+  useThree,
+  useLoader,
+} from "react-three-fiber";
 
 import axios from "axios";
 import setUser from "../../store/action/setUser";
 import Swal from "sweetalert2";
-import { Canvas } from "react-three-fiber";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+extend({ OrbitControls });
+
+const Orbit = () => {
+  const { camera, gl } = useThree();
+  return <orbitControls args={[camera, gl.domElement]} />;
+};
+
+const Background = () => {
+  const texture = useLoader(THREE.TextureLoader, "/autoshop.jpg");
+
+  const { gl } = useThree();
+  const formatted = new THREE.WebGLCubeRenderTarget(
+    texture.image.height
+  ).fromEquirectangularTexture(gl, texture);
+
+  return <primitive attach="background" object={formatted}></primitive>;
+};
+
+const mainCanvas = () => {
+  return (
+    <Canvas>
+      <Orbit />
+      <Suspense fallback={null}>
+        <Background />
+      </Suspense>
+    </Canvas>
+  );
+};
 
 const Login = () => {
   const history = useHistory();

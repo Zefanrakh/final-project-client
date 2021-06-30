@@ -33,11 +33,14 @@ const Customer = () => {
   useEffect(async () => {
     if (!localStorage.access_token) {
       history.push("/login");
+      return;
     }
 
     if (user && user.role === "customer") {
       history.push("/appointment");
+      return;
     }
+    console.log("ADA DI SINIIII");
 
     fetchCustomerHandler();
   }, [user]);

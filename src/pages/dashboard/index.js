@@ -123,6 +123,7 @@ const Dashboard = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
+    console.log(user, "DI DASHBOARD");
     if (user && user.role === "customer") {
       history.push("/appointment");
     }
