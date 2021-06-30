@@ -1,6 +1,13 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 const Card = ({ user }) => {
-  const { id, dropperName, pickupperName, pickupTime, presenceDate, Appointment } = user;
+  const {
+    id,
+    dropperName,
+    pickupperName,
+    pickupTime,
+    presenceDate,
+    Appointment,
+  } = user;
   return (
     <div className="card-container">
       <div className="text-header id-text">{id}</div>

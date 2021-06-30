@@ -137,7 +137,7 @@ const Verify = () => {
             // console.log(resultUser.data.user);
             const access_token = resultUser.data.access_token;
             localStorage.setItem("access_token", access_token);
-            dispatch(setUser(resultUser.data.user.User));
+            dispatch(setUser(resultUser.data.user));
             history.push("/");
           }
           localStorage.removeItem("emailForRegistration");
