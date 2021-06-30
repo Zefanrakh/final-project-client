@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
-import { addAppointment, fetchCustomer } from "../../store/action/"
+import { addAppointment, fetchCustomer, fetchAppointment, fetchAppointmentByCustomer } from "../../store/action/"
 import { useDispatch, useSelector } from "react-redux"
 
 const dummyDataMember = [
@@ -31,7 +31,8 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const data = useSelector(state => state.fetchCustomerReducer.customers)
   let now = new Date()
   let nowStr = now.addDays(2).toISOString().substring(0, 10)
-  const role = localStorage.getItem("role");
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const role = user.role
   const [customerData, setCustomerData] = useState({});
   const [customerChoosed, setCustomerChoosed] = useState([]);
   const [inputCustomerValue, setInputCustomerValue] = useState([]);
@@ -55,10 +56,8 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     setCustomerChoosed({});
     setInputCustomerValue(e.target.value);
     const customers = data.filter((customer) => {
-      console.log(customer);
       return e.target.value && customer.name.toLowerCase().includes(e.target.value.toLowerCase());
     });
-    console.log(customers);
     setCustomerData(customers);
   };
 
@@ -75,8 +74,12 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     if(role === 'admin'){
       status = 'sudah bayar'
     }
+    let CustomerId = Number(customerChoosed.id)
+    if(role === 'customer'){
+      CustomerId = user.CustomerId
+    }
     const payload = {
-      CustomerId: Number(customerChoosed.id),
+      CustomerId: CustomerId,
       childCategory,
       packageCategory,
       childName,
@@ -90,10 +93,15 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     console.log(payload);
     dispatch(addAppointment(payload))
     .then(({data})=> {
+      if(role === 'admin'){
+        dispatch(fetchAppointment())
+      }else{
+        dispatch(fetchAppointmentByCustomer(CustomerId))
+      }
       console.log(data);
     })
     .catch(err=>{
-      console.log(err);
+      console.log(err.response.data.message);
     })
   }
 

@@ -38,7 +38,9 @@ const AddMemberForm = ({ openPopUpHandler }) => {
     dropperName: "",
     pickupperName: "",
     presenceDate: nowStr,
-    pickupTime: ""
+    pickupTime: "",
+    category: "",
+    customerEmail: ""
   })
 
   useEffect(() => {
@@ -47,7 +49,6 @@ const AddMemberForm = ({ openPopUpHandler }) => {
   if(!appointments){
     return <p>Loading..</p>
   }
-  console.log(appointments);
   const onChangeHandler = (e) => {
     setAppointmentChoosed({});
     setInputAppointmentValue(e.target.value);
@@ -58,16 +59,14 @@ const AddMemberForm = ({ openPopUpHandler }) => {
   };
   const createPresence = (e) => {
     e.preventDefault()
-    console.log(inputForm);
     dispatch(addPresence(inputForm))
     .then(({data}) => {
-      console.log(data);
       dispatch(fetchPresence())
       setLinkAkses(`https://day-care-32c02.web.app/viewer/${appointmentChoosed.Price.category}?token=${data.token}`)
       setShowQrcode(true)
     })
     .catch(err=>{
-      console.log(err);
+      console.log(err.response.data.message);
     })
   }
 
@@ -111,7 +110,7 @@ const AddMemberForm = ({ openPopUpHandler }) => {
                         <div
                           className="text-choose"
                           onClick={() => {setAppointmentChoosed(appointment)
-                            setInputForm({...inputForm, AppointmentId: appointment.id})
+                            setInputForm({...inputForm, AppointmentId: appointment.id, category: appointment.Price.category, customerEmail: appointment.Customer.email})
                           }}
                         >
                           choose
@@ -125,8 +124,8 @@ const AddMemberForm = ({ openPopUpHandler }) => {
               <input type="text" placeholder="Masukan Dropper" onChange={(e) => setInputForm({...inputForm, dropperName: e.target.value})}/>
               <label>Pickuper</label>
               <input type="text" placeholder="Masukan Pickuper" onChange={(e) => setInputForm({...inputForm, pickupperName: e.target.value})}/>
-              <label>Date</label>
-              <input type="date" onChange={(e) => setInputForm({...inputForm, presenceDate: e.target.value})}/>
+              {/* <label>Date</label>
+              <input type="date" onChange={(e) => setInputForm({...inputForm, presenceDate: e.target.value})}/> */}
               <label>Time</label>
               <input type="time" onChange={(e) => setInputForm({...inputForm, pickupTime: e.target.value})}/>
 
@@ -141,7 +140,6 @@ const AddMemberForm = ({ openPopUpHandler }) => {
               <QRCode value={linkAkses}/>
             </div>
             <input type="button" onClick={() => printDiv('print-area')} value="print" />
-            <a href={linkAkses}>{linkAkses}</a>
           </>
           )
       }
