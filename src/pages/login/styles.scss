@@ -2,18 +2,19 @@
   position: relative;
   margin: 100px auto;
   max-width: 983px;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.1) 4px 5px 10px 4px;
   display: flex;
-  background: white;
   padding: 0 16px;
 
   img {
     height: 520px;
+    margin-right: 2rem;
   }
 
   .form-container {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.1) 4px 5px 10px 4px;
+    background: white;
     display: flex;
     flex-direction: column;
     width: 100%;
