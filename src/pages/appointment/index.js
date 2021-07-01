@@ -9,7 +9,11 @@ import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import Payment from "../../components/payment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAppointment } from "../../store/action";
+import {
+  fetchAppointment,
+  fetchAppointmentByCustomer,
+} from "../../store/action";
+import CardBanner from "../../components/cardBanner";
 
 const listHeader = [
   "Id",
@@ -49,15 +53,32 @@ const Appointment = () => {
   const [isPayment, setIsPayment] = useState(false);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [isloading, setIsloading] = useState(false);
+  const [isloading, setIsloading] = useState(true);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
-
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const dispatch = useDispatch();
   const data = useSelector(
     (state) => state.fetchAppointmentReducer.appointments
   );
+  const user = useSelector(({ userReducer }) => userReducer.user);
+
+  useEffect(async () => {
+    if (!localStorage.access_token) {
+      history.push("/login");
+    }
+    if (user) {
+      if (user.role === "admin") {
+        await dispatch(fetchAppointment());
+      } else {
+        await dispatch(fetchAppointmentByCustomer(user.Customer.id));
+      }
+    }
+  }, [user]);
+
   useEffect(() => {
     if (search) {
       const parsed = queryString.parse(search);
@@ -69,18 +90,7 @@ const Appointment = () => {
     }
   }, [search]);
 
-  useEffect(() => {
-    if (!localStorage.access_token) {
-      history.push("/login");
-    }
-    setIsloading(true);
-    dispatch(fetchAppointment());
-    setIsloading(false);
-  }, []);
-
-  if (isloading) {
-    return <p>Loading..</p>;
-  }
+  console.log(data, "<<<<");
 
   return (
     <div className="appointment-container">
@@ -93,6 +103,20 @@ const Appointment = () => {
           />
         )}
         <Header />
+        <div className="info-container">
+          <div className="banner-container">
+            <CardBanner
+              title="List Appointment"
+              subTitle="create and see your appointment "
+              image="http://res.cloudinary.com/dfh39qfib/image/upload/v1624977239/treljlrt2qn6f8f2yrtx.png"
+            />
+          </div>
+          <div className="info-total">
+            {result.length === 0 ? data.length : result.length}
+            <div className="text">Appointments</div>
+          </div>
+        </div>
+
         {isPayment ? (
           <Payment query={queryString.parse(search)} />
         ) : (
@@ -100,7 +124,7 @@ const Appointment = () => {
             <MainBoard
               isAppointment={true}
               listHeader={listHeader}
-              dummyData={dummyData}
+              data={result.length === 0 ? data : result}
             />
             <FloatingButton onClick={openPopUpHandler}>
               <i class="fas fa-plus"></i>

@@ -1,12 +1,16 @@
 .costumer-container {
   width: 1200px;
   height: 90vh;
-  background: #f5f6fb;
+  background: white;
   border-radius: 12px;
   display: flex;
   overflow: hidden;
   position: relative;
   box-shadow: 6px 10px 12px rgba(122, 122, 122, 0.212);
+
+  .card-banner-container {
+    margin-top: 16px;
+  }
 
   .button-container {
     position: absolute;
@@ -26,7 +30,30 @@
     padding: 8px;
   }
 
+  .main-container::-webkit-scrollbar {
+    display: none;
+  }
+
   .main-container {
-    width: 80%;
+    width: 92%;
+    padding: 16px 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    .info-container {
+      display: flex;
+      justify-content: space-between;
+
+      .info-total {
+        font-size: 70px;
+        color: #f15c60;
+        padding: 0 64px;
+        text-align: center;
+
+        .text {
+          font-size: 18px;
+        }
+      }
+    }
   }
 }

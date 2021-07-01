@@ -1,16 +1,16 @@
 import io from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
 import { config, baseUrl } from "../../config";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 import "./styles.scss";
 const Monitoring = () => {
+  const params = useParams();
   const socketRef = useRef();
   const peerConnections = {};
   const [openVideo, setOpenVideo] = useState(false);
   const history = useHistory();
-
-  useEffect(async () => {
+  const connectionHandler = async () => {
     socketRef.current = await io.connect(baseUrl);
 
     socketRef.current.on("answer", (id, description) => {
@@ -43,7 +43,6 @@ const Monitoring = () => {
     socketRef.current.on("candidate", (id, candidate) => {
       peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     });
-    console.log(peerConnections);
 
     socketRef.current.on("disconnectPeer", (id) => {
       peerConnections[id].close();
@@ -107,6 +106,9 @@ const Monitoring = () => {
     function handleError(error) {
       console.error("Error: ", error);
     }
+  };
+  useEffect(() => {
+    connectionHandler();
   });
 
   const openVideoHandler = () => {

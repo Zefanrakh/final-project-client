@@ -1,62 +1,82 @@
 .side-menu {
-  background: white;
-  width: 20%;
+  background: #332a7c;
+  width: 8%;
   display: flex;
   flex-direction: column;
-  padding: 16px 36px;
   align-items: center;
   box-sizing: border-box;
+  margin: 8px 0 8px 8px;
+  border-radius: 12px;
+  position: relative;
+
+  .logout-container {
+    position: absolute !important;
+    bottom: 0;
+  }
 
   .logo {
-    background: #efefef;
-    color: #757474;
+    color: white;
     width: 80%;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 16px;
-    margin-bottom: 48px;
-  }
-
-  .register-button {
-    width: 100%;
-    height: 40px;
-    background: #f15c60;
-    color: white;
-    border-radius: 8px;
-    font-size: 12px;
-    margin-bottom: 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 16px;
-    border: none;
+    margin: 16px 0 32px;
+    font-weight: 800;
   }
 
   .menu-container {
     width: 100%;
     display: flex;
     align-items: center;
-    font-size: 14px;
-    margin-bottom: 36px;
-    color: #828490;
+    font-size: 17px;
+    margin-bottom: 12px;
+    height: 52px;
+    color: white;
     font-weight: 500;
-    padding-left: 8px;
+    justify-content: center;
+    position: relative;
     box-sizing: border-box;
     cursor: pointer;
 
-    .icon {
-      margin-right: 18px;
+    .fluid-active {
+      background: white;
+      height: 40px;
+      width: 80px;
+      position: absolute;
+      right: 0;
+      border-top-left-radius: 24px;
+      border-bottom-left-radius: 24px;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      box-sizing: border-box;
+      .icon-active {
+        color: #f15c60;
+      }
     }
-  }
 
-  .active {
-    color: black;
-    color: #f15c60;
+    .fluid-active:before {
+      content: "";
+      position: absolute;
+      bottom: -40px;
+      right: 0;
+      height: 40px;
+      width: 40px;
+      border-top-right-radius: 50%;
+      box-shadow: 20px 0px 0 0 white;
+    }
 
-    .icon {
-      color: #f15c60;
+    .fluid-active:after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: 0;
+      height: 40px;
+      width: 40px;
+      border-bottom-right-radius: 50%;
+      box-shadow: 0 20px 0 0 white;
     }
   }
 }

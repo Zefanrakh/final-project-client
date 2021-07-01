@@ -1,7 +1,7 @@
 import { config, baseUrl } from "../../config";
 import { useEffect, useRef } from "react";
 import io from "socket.io-client";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import queryString from "query-string";
 import jwt from "jsonwebtoken";
 import "./styles.scss";
@@ -10,21 +10,22 @@ const Viewer = () => {
   const socketRef = useRef();
   const history = useHistory();
   const { search } = useLocation();
+  const params = useParams();
 
   useEffect(() => {
     const parsed = queryString.parse(search);
-    const decodeQuery = jwt.verify(parsed.query, "privateKey");
-    const today = new Date().getTime();
-    const from = new Date(decodeQuery.startDate).getTime();
-    const to = new Date(decodeQuery.endDate).getTime();
-    const withinRange = today >= from && today <= to;
-
-    if (!withinRange) {
-      history.push("/appointment?message=not-avalaible");
+    try {
+      const dateToday = new Date().toISOString().substring(0, 10);
+      const decodeQuery = jwt.verify(parsed.token, "123456");
+      if (dateToday !== decodeQuery.presenceDate) {
+        history.push("/notfound?status=access-forbidden");
+      }
+    } catch (error) {
+      history.push("/notfound?status=access-forbidden");
     }
   }, []);
 
-  useEffect(async () => {
+  const connectionHandler = async () => {
     socketRef.current = await io.connect(baseUrl);
 
     const video = document.querySelector("video");
@@ -67,6 +68,9 @@ const Viewer = () => {
       socketRef.current.close();
       peerConnection.close();
     };
+  };
+  useEffect(() => {
+    connectionHandler();
   });
 
   return (

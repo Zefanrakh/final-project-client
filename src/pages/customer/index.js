@@ -5,44 +5,44 @@ import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
-import { fetchCustomer } from "../../store/action"
-import { useDispatch, useSelector} from "react-redux"
+import { fetchCustomer } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import CardBanner from "../../components/cardBanner";
 
 const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
-const dummyData = [
-  {
-    id: "1",
-    name: "kevin",
-    address: "bogor",
-    email: "kevin@gmail.com",
-    phone: "081121313131",
-  },
-  {
-    id: "2",
-    name: "Joni",
-    address: "alor",
-    email: "joni@gmail.com",
-    phone: "424244242",
-  },
-];
 const Customer = () => {
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchCustomerReducer.customers)
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.fetchCustomerReducer.customers);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
+  const [isLoading, setIsLoading] = useState(true);
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
-  useEffect(() => {
+
+  const fetchCustomerHandler = async () => {
+    await dispatch(fetchCustomer());
+    setIsLoading(false);
+  };
+
+  useEffect(async () => {
     if (!localStorage.access_token) {
       history.push("/login");
+      return;
     }
-    dispatch(fetchCustomer())
-  },[])
-  if(!data){
-    return <p>Loading...</p>
-  }
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+      return;
+    }
+
+    fetchCustomerHandler();
+  }, [user]);
 
   return (
     <div className="costumer-container">
@@ -50,10 +50,22 @@ const Customer = () => {
       <SideMenu />
       <div className="main-container">
         <Header />
+        <div className="info-container">
+          <CardBanner
+            title="List Customer Page"
+            subTitle="add and delete customer here!"
+          />
+          <div className="info-total">
+            {result.length === 0 ? data.length : result.length}
+            <div className="text">Customers</div>
+          </div>
+        </div>
+
         <MainBoard
           listHeader={listHeader}
-          data={data}
+          data={result.length === 0 ? data : result}
           isMemberPage={true}
+          isLoading={isLoading}
         />
         <FloatingButton onClick={openPopUpHandler}>
           <i class="fas fa-plus"></i>

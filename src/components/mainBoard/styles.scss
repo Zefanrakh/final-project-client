@@ -1,26 +1,35 @@
 .main-board {
-  padding: 40px;
-  height: 70vh;
-  overflow: scroll;
+  background: white;
+  margin-top: 32px;
 
   .react-loading-skeleton {
     height: 50px;
-    // box-shadow: 6px 2px 1px hsla(0, 0%, 47.8%, 0.212);
   }
+
+  .data-notfound__container {
+    display: flex;
+    justify-content: center;
+    margin-top: 64px;
+
+    img {
+      width: 200px;
+    }
+  }
+
   .header__main-board {
     display: flex;
     width: 100%;
-    background: white;
+    background: #ff5f60;
     height: 50px;
     box-sizing: border-box;
     border-radius: 8px;
     align-items: center;
     justify-content: space-between;
     padding: 16px 32px;
-    color: #757474;
+    color: white;
     margin-bottom: 16px;
     font-weight: 600;
-    box-shadow: 6px 10px 12px hsla(0, 0%, 47.8%, 0.212);
+    // box-shadow: 6px 10px 12px hsla(0, 0%, 47.8%, 0.212);
     .text-header {
       flex: 2;
     }

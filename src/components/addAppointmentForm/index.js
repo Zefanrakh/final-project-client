@@ -1,8 +1,21 @@
 import "./styles.scss";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
-import { addAppointment, fetchCustomer } from "../../store/action/"
-import { useDispatch, useSelector } from "react-redux"
+import {
+  addAppointment,
+  fetchCustomer,
+  fetchAppointment,
+  fetchAppointmentByCustomer,
+  fetchPriceList
+} from "../../store/action/";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createInvoice,
+  createPaymentDetail,
+  setError,
+} from "../../store/action/payment";
+import { useHistory } from "react-router";
+import Swal from "sweetalert2";
 
 const dummyDataMember = [
   {
@@ -22,18 +35,22 @@ const dummyDataMember = [
 ];
 
 const AddAppointmentForm = ({ openPopUpHandler }) => {
-  Date.prototype.addDays = function(days) {
+  const history = useHistory();
+  Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
-  }
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchCustomerReducer.customers)
-  let now = new Date()
-  let nowStr = now.addDays(2).toISOString().substring(0, 10)
-  const role = localStorage.getItem("role");
+  };
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.fetchCustomerReducer.customers);
+  const priceList = useSelector((state) => state.priceReducer.priceList);
+  let price = []
+  let now = new Date();
+  let nowStr = now.addDays(2).toISOString().substring(0, 10);
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const role = user.role;
   const [customerData, setCustomerData] = useState({});
-  const [customerChoosed, setCustomerChoosed] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [inputCustomerValue, setInputCustomerValue] = useState([]);
   const [ageValue, setAgeValue] = useState("");
   const [childName, setChildName] = useState("");
@@ -41,89 +58,155 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const [startDate, setStartDate] = useState(nowStr);
   const [endDate, setEndDate] = useState(nowStr);
   const [packageQty, setPackageQty] = useState(1);
-  const [childCategory, setChildCategory] = useState("toddler");
-  const [packageCategory, setPackageCategory] = useState("daily");
+  const [selectedCategory, setSelectedCategory] = useState("Toddler");
+  const [selectedPackage, setSelectedPackage] = useState("Daily");
   const [completedCategory, setCompletedCategory] = useState(false);
+  const [quantity, setQuantity] = useState(1)
 
-  useEffect(() => {
-    dispatch(fetchCustomer())
-  },[])
-  if(!data){
-    return <p>Loading..</p>
+  // const [input , setInput] = useState({
+  //   note: '',
+  //   childName: '',
+  //   childAge: 0,
+  //   startDate: nowStr,
+  //   endDDate:nowStr,
+  // })
+
+  useEffect( async () => {
+    await dispatch(fetchCustomer());
+    await dispatch(fetchPriceList());
+  }, []);
+
+  if (!data || !priceList) {
+    return <p>Loading..</p>;
+  }
+  /// display price from the price find in pricelist
+  if(priceList){
+    price = priceList.find(item => item.package === selectedPackage && item.category === selectedCategory)
   }
   const onChangeHandler = (e) => {
-    setCustomerChoosed({});
+    setSelectedCustomer({});
     setInputCustomerValue(e.target.value);
     const customers = data.filter((customer) => {
-      console.log(customer);
-      return e.target.value && customer.name.toLowerCase().includes(e.target.value.toLowerCase());
+      return (
+        e.target.value &&
+        customer.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
     });
-    console.log(customers);
     setCustomerData(customers);
   };
+  const saveAppointment = async (e) => {
+    e.preventDefault();
 
-  const saveAppointment = (e) => {
-    e.preventDefault()
-    let quantity = Number(packageQty)
-    let endDateValue = endDate
-    if(packageCategory === "daily"){
-      quantity = Number(getDailyQty())
-    }else{
-      endDateValue = getEndDate()
+    setQuantity(Number(packageQty));
+    let endDateValue = endDate;
+    if (selectedPackage === "Daily") {
+      setQuantity(Number(getDailyQty()));
+    } else {
+      endDateValue = getEndDate();
     }
-    let status = 'belum bayar'
-    if(role === 'admin'){
-      status = 'sudah bayar'
+    let status = "belum bayar";
+    if (role === "admin") {
+      status = "sudah bayar";
+    }
+    let CustomerId = Number(selectedCustomer.id);
+    if (role === "customer") {
+      CustomerId = user.Customer.id;
     }
     const payload = {
-      CustomerId: Number(customerChoosed.id),
-      childCategory,
-      packageCategory,
+      CustomerId: CustomerId,
+      childCategory: selectedCategory,
+      packageCategory: selectedPackage,
       childName,
       childAge: Number(ageValue),
       quantity,
       note,
       startDate,
       endDate: endDateValue,
-      status
+      status,
+    };
+
+    //fetch price from price table, amount ==== price  <<<<<<<<<<<<<
+    
+    const invoicePayload = {
+      amount: price.price * quantity,
+      email: 'dudebahrulhayat@gmail.com',
+      description: `${selectedPackage} - ${selectedCategory}`,
+    };
+
+    try {
+      const appointment = await dispatch(addAppointment(payload));
+      if (role === 'admin') {
+        await dispatch(fetchAppointment())
+        openPopUpHandler()
+      } else {
+        await dispatch(fetchAppointmentByCustomer(CustomerId))
+        const invoice = await dispatch(createInvoice(invoicePayload))
+        console.log(invoice.data.invoiceUrl,'====>');
+        
+        //dummyPrice and quantity
+        const paymentPayload = {
+          price: price.price,
+          quantity: quantity,
+          AppointmentId: appointment.data.id,
+          InvoiceId: invoice.data.id,
+        }
+        await dispatch(createPaymentDetail(paymentPayload))
+        //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
+        //query or params
+        // history.push(`/paymentDetail/${invoice.invoiceUrl}`)
+        //window.location.href = invoice.data.invoiceUrl
+        openPopUpHandler()
+        window.open(
+          invoice.data.invoiceUrl,
+          '_blank'
+        );
+      }
+    } catch (error) {
+      Swal.fire({
+        title: error.response.data.message,
+        icon: "error",
+      });
+      dispatch(setError(error));
     }
-    console.log(payload);
-    dispatch(addAppointment(payload))
-    .then(({data})=> {
-      console.log(data);
-    })
-    .catch(err=>{
-      console.log(err);
-    })
-  }
+  };
 
   const changeStartDate = (e) => {
-    setStartDate(e.target.value)
-  }
+    setStartDate(e.target.value);
+    getDailyQty()
+  };
 
   const changeEndDate = (e) => {
-    setEndDate(e.target.value)
-  }
+    setEndDate(e.target.value);
+    getDailyQty()
+  };
 
   const getDailyQty = () => {
-    const formatedStartDate = new Date(startDate)
-    const formatedEndDate = new Date(endDate)
-    console.log(formatedStartDate, formatedEndDate);
-    const dateDiff = (formatedEndDate.getTime() - formatedStartDate.getTime()) / (1000 * 3600 * 24) + 1
-    return dateDiff
-  }
+    const formatedStartDate = new Date(startDate);
+    const formatedEndDate = new Date(endDate);
+    const dateDiff =
+      (formatedEndDate.getTime() - formatedStartDate.getTime()) /
+        (1000 * 3600 * 24) +
+      1;
+    setQuantity(dateDiff)
+  };
 
   const getEndDate = () => {
-    if(packageCategory === 'weekly'){
-      const formatedStartDate = new Date(startDate)
-      const newEndDate = formatedStartDate.addDays((7 * packageQty)-1).toISOString().substring(0, 10)
-      return newEndDate
-    }else if (packageCategory === 'monthly'){
-      const formatedStartDate = new Date (startDate)
-      const newEndDate = formatedStartDate.addDays((30 * packageQty)-1).toISOString().substring(0, 10)
-      return newEndDate
+    if (selectedPackage === "Weekly") {
+      const formatedStartDate = new Date(startDate);
+      const newEndDate = formatedStartDate
+        .addDays(7 * packageQty - 1)
+        .toISOString()
+        .substring(0, 10);
+      return newEndDate;
+    } else if (selectedPackage === "Monthly") {
+      const formatedStartDate = new Date(startDate);
+      const newEndDate = formatedStartDate
+        .addDays(30 * packageQty - 1)
+        .toISOString()
+        .substring(0, 10);
+      return newEndDate;
     }
-  }
+  };
 
   return (
     <div className="overlay">
@@ -136,69 +219,86 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
               {" "}
               <label>Choose Category</label>
               <div className="category-container">
-                <div                  className={`category-text ${
-
-                    childCategory === "toddler" && "active"
+                <div
+                  className={`category-text ${
+                    selectedCategory === "Toddler" && "active"
                   }`}
-                  onClick={() => setChildCategory("toddler")}
+                  onClick={() => setSelectedCategory("Toddler")}
                 >
                   Toddler
                 </div>
                 <div
                   className={`category-text ${
-                    childCategory === "infant" && "active"
+                    selectedCategory === "Infant" && "active"
                   }`}
-                  onClick={() => setChildCategory("infant")}
+                  onClick={() => setSelectedCategory("Infant")}
                 >
                   Infant
                 </div>
+                {price && (<>Total price: {price.price * quantity}</>) }
               </div>
               <label>Choose Package</label>
               <div className="category-container">
                 <div
                   className={`category-text ${
-                    packageCategory === "daily" && "active"
+                    selectedPackage === "Daily" && "active"
                   }`}
-                  onClick={() => setPackageCategory("daily")}
+                  onClick={() => setSelectedPackage("Daily")}
                 >
                   Daily
                 </div>
                 <div
                   className={`category-text ${
-                    packageCategory === "weekly" && "active"
+                    selectedPackage === "Weekly" && "active"
                   }`}
-                  onClick={() => setPackageCategory("weekly")}
+                  onClick={() => setSelectedPackage("Weekly")}
                 >
                   Weekly
                 </div>
                 <div
                   className={`category-text ${
-                    packageCategory === "monthly" && "active"
+                    selectedPackage === "Monthly" && "active"
                   }`}
-                  onClick={() => setPackageCategory("monthly")}
+                  onClick={() => setSelectedPackage("Monthly")}
                 >
                   Monthly
                 </div>
               </div>
               <label>Start Date</label>
-              <input type="date" value={startDate} onChange={(e) => {changeStartDate(e)}}/>
-              {packageCategory === "daily" && (
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => {
+                  changeStartDate(e);
+                }}
+              />
+              {selectedPackage === "Daily" && (
                 <>
                   <label>End Date</label>
-                  <input type="date" value={endDate} onChange={(e) => {changeEndDate(e)}}/>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => {
+                      changeEndDate(e);
+                    }}
+                  />
                 </>
               )}
-              {
-              packageCategory !== "daily" &&
-              <>
-                <label>How many {packageCategory === "monthly"? "Month": "Week"}</label>
-                <input
-                  type="number"
-                  value={packageQty}
-                  onChange={(e) => setPackageQty(e.target.value)}
-                />
-              </>
-              }
+              {selectedPackage !== "Daily" && (
+                <>
+                  <label>
+                    How many {selectedPackage === "Monthly" ? "Month" : "Week"}
+                  </label>
+                  <input
+                    type="number"
+                    value={packageQty}
+                    onChange={(e) => {
+                      setPackageQty(e.target.value)
+                      setQuantity(e.target.value)
+                    }}
+                  />
+                </>
+              )}
               {role === "admin" && (
                 <>
                   <label>Find Customer</label>
@@ -206,9 +306,9 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                     type="text"
                     onChange={onChangeHandler}
                     value={
-                      isEmpty(customerChoosed)
+                      isEmpty(selectedCustomer)
                         ? inputCustomerValue
-                        : customerChoosed.name
+                        : selectedCustomer.name
                     }
                   />
                 </>
@@ -216,7 +316,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
             </>
           )}
 
-          {!isEmpty(customerData) && isEmpty(customerChoosed) && (
+          {!isEmpty(customerData) && isEmpty(selectedCustomer) && (
             <div className="find-customer">
               {customerData.map((customer, idx) => {
                 return (
@@ -224,7 +324,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                     <div className="customer-name">{customer.name}</div>
                     <div
                       className="text-choose"
-                      onClick={() => setCustomerChoosed(customer)}
+                      onClick={() => setSelectedCustomer(customer)}
                     >
                       choose
                     </div>
@@ -236,7 +336,10 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
           {completedCategory && (
             <>
               <label>Child Name</label>
-              <input type="text" onChange={(e) => setChildName(e.target.value)}/>
+              <input
+                type="text"
+                onChange={(e) => setChildName(e.target.value)}
+              />
               <label>Child Age</label>
               <input
                 type="number"
@@ -244,7 +347,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 onChange={(e) => setAgeValue(e.target.value)}
               />
               <label>Note</label>
-              <textarea onChange={(e) => setNote(e.target.value)}/>
+              <textarea onChange={(e) => setNote(e.target.value)} />
             </>
           )}
           {completedCategory ? (

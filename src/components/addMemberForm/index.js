@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux"
-import { addCustomer } from "../../store/action"
+import { addCustomer, fetchCustomer } from "../../store/action"
 
 const AddMemberForm = ({ openPopUpHandler }) => {
   const dispatch = useDispatch()
@@ -32,8 +32,9 @@ const AddMemberForm = ({ openPopUpHandler }) => {
     e.preventDefault()
     console.log(inputForm);
     dispatch(addCustomer(inputForm))
-    .then(({data}) => {
-      console.log(data);
+    .then( ({data}) => {
+      dispatch(fetchCustomer())
+      openPopUpHandler()
     })
     .catch(err => {
       console.log(err);
