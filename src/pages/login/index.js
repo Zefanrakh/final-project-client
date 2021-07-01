@@ -1,48 +1,12 @@
 import "./styles.scss";
 import { useHistory } from "react-router-dom";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import * as THREE from "three";
-import {
-  Canvas,
-  useFrame,
-  extend,
-  useThree,
-  useLoader,
-} from "react-three-fiber";
+import MainCanvas from "../../components/threejsbackground/index.js";
 
 import axios from "axios";
 import setUser from "../../store/action/setUser";
 import Swal from "sweetalert2";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-extend({ OrbitControls });
-
-const Orbit = () => {
-  const { camera, gl } = useThree();
-  return <orbitControls args={[camera, gl.domElement]} />;
-};
-
-const Background = () => {
-  const texture = useLoader(THREE.TextureLoader, "/autoshop.jpg");
-
-  const { gl } = useThree();
-  const formatted = new THREE.WebGLCubeRenderTarget(
-    texture.image.height
-  ).fromEquirectangularTexture(gl, texture);
-
-  return <primitive attach="background" object={formatted}></primitive>;
-};
-
-const mainCanvas = () => {
-  return (
-    <Canvas>
-      <Orbit />
-      <Suspense fallback={null}>
-        <Background />
-      </Suspense>
-    </Canvas>
-  );
-};
 
 const Login = () => {
   const history = useHistory();
@@ -85,12 +49,10 @@ const Login = () => {
       });
   };
   return (
-    <div>
+    <div style={{ position: "relative" }}>
+      <MainCanvas />
       <div id="container-form">
-        <img
-          alt="container-login"
-          src="https://image.freepik.com/free-vector/group-young-people-posing-photo_52683-18823.jpg"
-        />
+        <img src="smdc3.png" alt="" />
         <div className="form-container">
           <form id="form-user-login" autoComplete="off" onSubmit={handleSubmit}>
             <h4 className="login-form">LOGIN</h4>
