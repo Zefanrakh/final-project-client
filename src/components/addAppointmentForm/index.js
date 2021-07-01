@@ -6,7 +6,7 @@ import {
   fetchCustomer,
   fetchAppointment,
   fetchAppointmentByCustomer,
-  fetchPriceList
+  fetchPriceList,
 } from "../../store/action/";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -44,7 +44,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.fetchCustomerReducer.customers);
   const priceList = useSelector((state) => state.priceReducer.priceList);
-  let price = []
+  let price = [];
   let now = new Date();
   let nowStr = now.addDays(2).toISOString().substring(0, 10);
   const user = useSelector(({ userReducer }) => userReducer.user);
@@ -61,7 +61,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   const [selectedCategory, setSelectedCategory] = useState("Toddler");
   const [selectedPackage, setSelectedPackage] = useState("Daily");
   const [completedCategory, setCompletedCategory] = useState(false);
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
 
   // const [input , setInput] = useState({
   //   note: '',
@@ -71,7 +71,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
   //   endDDate:nowStr,
   // })
 
-  useEffect( async () => {
+  useEffect(async () => {
     await dispatch(fetchCustomer());
     await dispatch(fetchPriceList());
   }, []);
@@ -80,8 +80,11 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     return <p>Loading..</p>;
   }
   /// display price from the price find in pricelist
-  if(priceList){
-    price = priceList.find(item => item.package === selectedPackage && item.category === selectedCategory)
+  if (priceList) {
+    price = priceList.find(
+      (item) =>
+        item.package === selectedPackage && item.category === selectedCategory
+    );
   }
   const onChangeHandler = (e) => {
     setSelectedCustomer({});
@@ -126,40 +129,37 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
     };
 
     //fetch price from price table, amount ==== price  <<<<<<<<<<<<<
-    
+
     const invoicePayload = {
       amount: price.price * quantity,
-      email: 'dudebahrulhayat@gmail.com',
+      email: "dudebahrulhayat@gmail.com",
       description: `${selectedPackage} - ${selectedCategory}`,
     };
 
     try {
       const appointment = await dispatch(addAppointment(payload));
-      if (role === 'admin') {
-        await dispatch(fetchAppointment())
-        openPopUpHandler()
+      if (role === "admin") {
+        await dispatch(fetchAppointment());
+        openPopUpHandler();
       } else {
-        await dispatch(fetchAppointmentByCustomer(CustomerId))
-        const invoice = await dispatch(createInvoice(invoicePayload))
-        console.log(invoice.data.invoiceUrl,'====>');
-        
+        await dispatch(fetchAppointmentByCustomer(CustomerId));
+        const invoice = await dispatch(createInvoice(invoicePayload));
+        console.log(invoice.data.invoiceUrl, "====>");
+
         //dummyPrice and quantity
         const paymentPayload = {
           price: price.price,
           quantity: quantity,
           AppointmentId: appointment.data.id,
           InvoiceId: invoice.data.id,
-        }
-        await dispatch(createPaymentDetail(paymentPayload))
+        };
+        await dispatch(createPaymentDetail(paymentPayload));
         //submit appointment -- redirect to payment detail page, <<<<<<<<<<<<
         //query or params
         // history.push(`/paymentDetail/${invoice.invoiceUrl}`)
         //window.location.href = invoice.data.invoiceUrl
-        openPopUpHandler()
-        window.open(
-          invoice.data.invoiceUrl,
-          '_blank'
-        );
+        openPopUpHandler();
+        window.open(invoice.data.invoiceUrl, "_blank");
       }
     } catch (error) {
       Swal.fire({
@@ -172,12 +172,12 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
 
   const changeStartDate = (e) => {
     setStartDate(e.target.value);
-    getDailyQty()
+    getDailyQty();
   };
 
   const changeEndDate = (e) => {
     setEndDate(e.target.value);
-    getDailyQty()
+    getDailyQty();
   };
 
   const getDailyQty = () => {
@@ -187,7 +187,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
       (formatedEndDate.getTime() - formatedStartDate.getTime()) /
         (1000 * 3600 * 24) +
       1;
-    setQuantity(dateDiff)
+    setQuantity(dateDiff);
   };
 
   const getEndDate = () => {
@@ -235,7 +235,7 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                 >
                   Infant
                 </div>
-                {price && (<>Total price: {price.price * quantity}</>) }
+                {/* {price && (<>Total price: {price.price * quantity}</>) } */}
               </div>
               <label>Choose Package</label>
               <div className="category-container">
@@ -293,8 +293,8 @@ const AddAppointmentForm = ({ openPopUpHandler }) => {
                     type="number"
                     value={packageQty}
                     onChange={(e) => {
-                      setPackageQty(e.target.value)
-                      setQuantity(e.target.value)
+                      setPackageQty(e.target.value);
+                      setQuantity(e.target.value);
                     }}
                   />
                 </>
