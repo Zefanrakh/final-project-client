@@ -43,7 +43,6 @@ const Monitoring = () => {
     socketRef.current.on("candidate", (id, candidate) => {
       peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     });
-    console.log(peerConnections);
 
     socketRef.current.on("disconnectPeer", (id) => {
       peerConnections[id].close();

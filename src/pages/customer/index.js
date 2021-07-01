@@ -40,7 +40,6 @@ const Customer = () => {
       history.push("/appointment");
       return;
     }
-    console.log("ADA DI SINIIII");
 
     fetchCustomerHandler();
   }, [user]);
