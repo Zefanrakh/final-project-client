@@ -1,5 +1,7 @@
 import "./styles.scss";
 import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
+
 // import jwt from "jsonwebtoken";
 const Card = ({ user, isAppointment }) => {
   const {
@@ -8,11 +10,10 @@ const Card = ({ user, isAppointment }) => {
     childAge,
     startDate,
     endDate,
-    notes,
+    note,
     status,
     type,
   } = user;
-  
   const role = localStorage.getItem("role");
 
   const history = useHistory();
@@ -22,9 +23,16 @@ const Card = ({ user, isAppointment }) => {
     //   { childName, startDate, endDate, notes, childAge, type },
     //   "privateKey"
     // );
-
     // history.push(`/appointment?payment=${encodePayload}`);
   };
+
+  const showNotes = () => {
+    Swal.fire({
+      title: "Notes",
+      text: note,
+    });
+  };
+
   return (
     <div className="card-container">
       <div className="text-header id-text">{id}</div>
@@ -32,7 +40,9 @@ const Card = ({ user, isAppointment }) => {
       <div className="text-header">{childAge} Tahun</div>
       <div className="text-header">{startDate}</div>
       <div className="text-header">{endDate}</div>
-      <div className="text-header see-more">see more....</div>
+      <div className="text-header see-more" onClick={showNotes}>
+        see more
+      </div>
       <div
         className={`text-header ${
           status === "sudah bayar" ? "green-text" : "red-text"
@@ -40,14 +50,6 @@ const Card = ({ user, isAppointment }) => {
       >
         {status}
       </div>
-      {isAppointment && (
-        <div className="icon-qr">
-          <i
-            onClick={paymentHandler}
-            class={`fas ${status === "belum bayar" ? "fa-cash-register" : ""}`}
-          ></i>
-        </div>
-      )}
     </div>
   );
 };

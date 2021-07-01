@@ -13,6 +13,7 @@ import {
   fetchAppointment,
   fetchPresence,
 } from "../../store/action";
+import SkeletonComponent from "./skeleton";
 
 import "./styles.scss";
 
@@ -150,7 +151,7 @@ const Dashboard = () => {
       history.push("/login");
     }
     if (user && user.role === "customer") {
-      history.push("/appointment");
+      history.push("/dashboard");
     }
   }, [user]);
 
@@ -158,6 +159,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <>
         <SideMenu />
+        {isLoading && <SkeletonComponent />}
         {!isLoading && (
           <div className="main-container">
             <div className="banner-container">

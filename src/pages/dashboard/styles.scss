@@ -11,6 +11,10 @@
     width: 200px !important;
   }
 
+  .skeleton-container {
+    padding: 0 32px;
+  }
+
   .main-container::-webkit-scrollbar {
     display: none;
   }
