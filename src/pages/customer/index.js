@@ -5,11 +5,11 @@ import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import { useState, useEffect } from "react";
 import AddMemberForm from "../../components/addMemberForm";
-import { fetchCustomer } from "../../store/action"
-import { useDispatch, useSelector} from "react-redux"
+import { fetchCustomer } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const listHeader = ["Id", "Name", "Address", "Email", "Phone Number"];
+const listHeader = ["Id", "Name", "Address", "Email", "Phone Number", "Action"];
 const dummyData = [
   {
     id: "1",
@@ -27,10 +27,14 @@ const dummyData = [
   },
 ];
 const Customer = () => {
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.fetchCustomerReducer.customers)
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.fetchCustomerReducer.customers);
   const history = useHistory();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -38,10 +42,15 @@ const Customer = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    dispatch(fetchCustomer())
-  },[])
-  if(!data){
-    return <p>Loading...</p>
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+
+    dispatch(fetchCustomer());
+  }, [user]);
+  if (!data) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -52,7 +61,7 @@ const Customer = () => {
         <Header />
         <MainBoard
           listHeader={listHeader}
-          data={data}
+          data={result.length === 0 ? data : result}
           isMemberPage={true}
         />
         <FloatingButton onClick={openPopUpHandler}>

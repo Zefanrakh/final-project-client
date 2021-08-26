@@ -5,17 +5,21 @@ import MainBoard from "../../components/mainBoard";
 import FloatingButton from "../../components/floatingButton";
 import AddPresenceForm from "../../components/addPresenceForm";
 import { useState, useEffect } from "react";
-import { fetchPresence } from "../../store/action"
-import { useDispatch, useSelector} from "react-redux"
+import { fetchPresence } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const listHeader = ["Id", "Dropper", "Pickuper", "Time", "Date"];
+const listHeader = ["Id", "Child Name", "Dropper", "Pickupper", "Time", "Date","Qr-Code"];
 
 const PresenceList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const history = useHistory();
-  const data = useSelector(state => state.fetchPresenceReducer.presenceList)
+  const data = useSelector((state) => state.fetchPresenceReducer.presenceList);
   const [openPopUp, setOpenPopUp] = useState(false);
+  const user = useSelector(({ userReducer }) => userReducer.user);
+  const result = useSelector(
+    ({ searchResultReducer }) => searchResultReducer.result
+  );
   const openPopUpHandler = () => {
     setOpenPopUp(!openPopUp);
   };
@@ -23,27 +27,29 @@ const PresenceList = () => {
     if (!localStorage.access_token) {
       history.push("/login");
     }
-    dispatch(fetchPresence())
-  },[])
-  
+
+    if (user && user.role === "customer") {
+      history.push("/appointment");
+    }
+
+    dispatch(fetchPresence());
+  }, [user]);
+
   return (
     <div className="presenceList-container">
       <SideMenu />
       <div className="main-container">
         {openPopUp && (
-          <AddPresenceForm
-            openPopUpHandler={openPopUpHandler}
-            data={data}
-          />
+          <AddPresenceForm openPopUpHandler={openPopUpHandler} data={data} />
         )}
         <Header />
         <MainBoard
           listHeader={listHeader}
-          data={data}
+          data={result.length === 0 ? data : result}
           isPresenceListPage
         />
         <FloatingButton onClick={openPopUpHandler}>
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </FloatingButton>
       </div>
     </div>

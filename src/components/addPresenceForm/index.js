@@ -2,7 +2,7 @@ import "./styles.scss";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAppointment } from "../../store/action"
+import { fetchAppointment, fetchPresence } from "../../store/action"
 import { addPresence } from "../../store/action"
 import QRCode from "react-qr-code";
 
@@ -47,7 +47,7 @@ const AddMemberForm = ({ openPopUpHandler }) => {
   if(!appointments){
     return <p>Loading..</p>
   }
-
+  console.log(appointments);
   const onChangeHandler = (e) => {
     setAppointmentChoosed({});
     setInputAppointmentValue(e.target.value);
@@ -62,13 +62,26 @@ const AddMemberForm = ({ openPopUpHandler }) => {
     dispatch(addPresence(inputForm))
     .then(({data}) => {
       console.log(data);
-      setLinkAkses("http://localhost:3000/monitoring")
+      dispatch(fetchPresence())
+      setLinkAkses(`https://day-care-32c02.web.app/viewer/${appointmentChoosed.Price.category}?token=${data.token}`)
       setShowQrcode(true)
     })
     .catch(err=>{
       console.log(err);
     })
   }
+
+  function printDiv(divName) {
+      var printContents = document.getElementById(divName).innerHTML;
+      var originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+
+      window.print();
+
+      document.body.innerHTML = originalContents;
+  }
+
   return (
     <div className="overlay">
       <div className="add-presence-container ">
@@ -94,7 +107,7 @@ const AddMemberForm = ({ openPopUpHandler }) => {
                   {appointmentData.map((appointment, idx) => {
                     return (
                       <div className="customer-name__container" key={idx}>
-                        <div className="customer-name">{appointment.childName} - {appointment.Customer.name}</div>
+                        <div className="customer-name">{appointment.childName} ({appointment.Price.category}) - {appointment.Customer.name}</div>
                         <div
                           className="text-choose"
                           onClick={() => {setAppointmentChoosed(appointment)
@@ -120,7 +133,17 @@ const AddMemberForm = ({ openPopUpHandler }) => {
               <button>Submit</button>
             </form>
           </>
-        ): <QRCode value={linkAkses}/>
+        ): (
+          <>
+            <div className="title">Qr-Code</div>
+            <i className="fas fa-times icon-close" onClick={openPopUpHandler}></i>
+            <div id="print-area">
+              <QRCode value={linkAkses}/>
+            </div>
+            <input type="button" onClick={() => printDiv('print-area')} value="print" />
+            <a href={linkAkses}>{linkAkses}</a>
+          </>
+          )
       }
       </div>
     </div>

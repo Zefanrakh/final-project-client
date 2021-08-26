@@ -6,7 +6,7 @@ const fetchAppointmentAction = () => (dispatch) => {
         return axios({
             url: 'http://localhost:3001/appointment',
             method: 'GET',
-            headers: {}
+            headers: {access_token: localStorage.getItem("access_token")}
         })
         .then(({data}) => {
             console.log(data.data,'====action');

@@ -8,6 +8,7 @@ import History from "../pages/history";
 import PresenceList from "../pages/presenceList";
 import Monitoring from "../pages/monitoring";
 import Viewer from "../pages/viewer";
+import NotFound from "../pages/notfound";
 
 const routes = [
   {
@@ -16,7 +17,7 @@ const routes = [
   },
   {
     component: () => <Viewer />,
-    path: "/viewer/trgz",
+    path: "/viewer/:cameraId",
   },
   {
     component: () => <Monitoring />,
@@ -48,6 +49,10 @@ const routes = [
   },
 
   { component: () => <Customer />, path: "/customers" },
+  {
+    component: () => <NotFound />,
+    path: "",
+  },
 ];
 
 export default routes;

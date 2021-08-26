@@ -1,9 +1,12 @@
 import "./styles.scss";
 import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideMenu = () => {
   const history = useHistory();
   const { pathname } = useLocation();
+
+  const user = useSelector(({ userReducer }) => userReducer.user);
 
   const changePageHandler = (val) => {
     history.push(val);
@@ -14,7 +17,11 @@ const SideMenu = () => {
     history.push("/login");
   };
 
-  const role = localStorage.getItem("role");
+  if (!user) {
+    return <></>;
+  }
+
+  const role = user.role;
   return (
     <div className="side-menu">
       <div className="logo">logo here</div>
